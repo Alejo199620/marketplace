@@ -26,10 +26,13 @@ Productos
 
     <table class="ui celled table">
 
+       
 
       <thead>
        <tr>
-        <th scope="col">Nombre</th>   
+        <th scope="col">Titulo</th>   
+        <th scope="col">Descripción</th>
+        <th scope="col">Valor</th>
         <th scope="col">Estado</th>
         <th scope="col">Acciones</th>
         </tr>
@@ -37,8 +40,11 @@ Productos
       <tbody>
         @foreach($data as $producto)
         <tr>
-          <td>{{ $producto->nombre }}</td>
+          <td>{{ $producto->titulo }}</td>
+          <td>{{ $producto->descripcion }}</td>
+          <td>{{ $producto->valor }}</td>
           <td>{{ $producto->estado }}</td>
+       
           <td>
             <a href="{{ route('categorias.edit', $producto->id) }}" class="ui button">Editar</a>
             <form action="{{ route('categorias.destroy', $producto->id) }}" method="POST" style="display:inline;">

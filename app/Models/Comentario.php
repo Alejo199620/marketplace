@@ -14,8 +14,18 @@ class Comentario extends Model
     protected $fillable = [
         'producto_id',
         'usuario_id',
-        'contenido',
-        'puntuacion',
+        'descripcion',
+        'valoracion',
+        'estado',
     ];
 
+  public function producto()
+    {
+        return $this->belongsTo(Producto::class, 'producto_id');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id');
+    }
 }

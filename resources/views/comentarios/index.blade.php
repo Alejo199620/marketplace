@@ -29,7 +29,9 @@ Comentarios
 
       <thead>
        <tr>
-        <th scope="col">Nombre</th>   
+        <th scope="col">Producto</th> 
+        <th scope="col">Descripción</th>  
+        <th scope="col">Valoración</th>
         <th scope="col">Estado</th>
         <th scope="col">Acciones</th>
         </tr>
@@ -37,7 +39,9 @@ Comentarios
       <tbody>
         @foreach($data as $comentario)
         <tr>
-          <td>{{ $comentario->nombre }}</td>
+          <td>{{ $comentario->producto->titulo }}</td>
+          <td>{{ $comentario->descripcion }}</td>
+          <td>{{ $comentario->valoracion }}</td>
           <td>{{ $comentario->estado }}</td>
           <td>
             <a href="{{ route('categorias.edit', $comentario->id) }}" class="ui button">Editar</a>

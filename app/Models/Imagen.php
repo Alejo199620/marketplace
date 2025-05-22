@@ -16,5 +16,12 @@ class Imagen extends Model
         'url',
     ];
 
-    
+
+    /**
+     * Get the product that owns the image.
+     */
+   public function producto()
+    {
+        return $this->belongsTo(Producto::class, 'producto_id');
+    }
 }

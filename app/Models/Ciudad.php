@@ -16,5 +16,14 @@ class Ciudad extends Model
         'estado',
     ];
 
-   
+      public function usuarios()
+    {
+        return $this->hasMany(Usuario::class, 'ciudad_id');
+    }
+
+    public function productos()
+    {
+        return $this->hasMany(Producto::class, 'ciudad_id');
+    }
+
 }

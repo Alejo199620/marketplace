@@ -30,7 +30,11 @@ Usuarios
       <thead>
        <tr>
         <th scope="col">Nombre</th>   
+        <th scope="col">Movil</th>
+        <th scope="col">Email</th>
+        <th scope="col">Ciudad</th>
         <th scope="col">Estado</th>
+        <th scope="col">Rol</th>
         <th scope="col">Acciones</th>
         </tr>
       </thead>
@@ -38,7 +42,12 @@ Usuarios
         @foreach($data as $usuario)
         <tr>
           <td>{{ $usuario->nombre }}</td>
+          <td>{{ $usuario->movil }}</td>
+          <td>{{ $usuario->email }}</td>
+          <td>{{ $usuario->ciudad->nombre }}</td>
           <td>{{ $usuario->estado }}</td>
+          <td>{{ $usuario->rol }}</td>
+          
           <td>
             <a href="{{ route('categorias.edit', $usuario->id) }}" class="ui button">Editar</a>
             <form action="{{ route('categorias.destroy', $usuario->id) }}" method="POST" style="display:inline;">
