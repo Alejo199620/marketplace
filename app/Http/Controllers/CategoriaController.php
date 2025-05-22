@@ -15,7 +15,7 @@ class CategoriaController extends Controller
     {
       $data = Categoria::all();
 
-      dd($data->toArray());
+      return view('categorias.index', compact('data'));
 
     }
 

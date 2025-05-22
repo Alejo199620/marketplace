@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Usuario;
 
 class UsuarioController extends Controller
 {
@@ -11,7 +12,12 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        echo "Hola desde el controlador UsuarioController";
+       {
+      $data = Usuario::all();
+
+      return view('usuarios.index', compact('data'));
+
+    }
     }
 
     /**

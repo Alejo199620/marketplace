@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Comentario;
 
 class ComentarioController extends Controller
 {
@@ -11,8 +13,12 @@ class ComentarioController extends Controller
      */
     public function index()
     {
-        echo "Hola desde el controlador ComentarioController";
-        
+        {
+      $data = Comentario::all();
+
+      return view('comentarios.index', compact('data'));
+
+    }
     }
 
     /**
