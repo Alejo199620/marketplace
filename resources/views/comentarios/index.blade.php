@@ -4,7 +4,7 @@
   <div class="col">
                 
                 <h2 class="page-title">
-Comentarios
+        Comentarios
 
                 </h2>
               </div>
@@ -42,7 +42,14 @@ Comentarios
           <td>{{ $comentario->producto->titulo }}</td>
           <td>{{ $comentario->descripcion }}</td>
           <td>{{ $comentario->valoracion }}</td>
-          <td>{{ $comentario->estado }}</td>
+          <td>
+            @if($comentario->estado==1)
+            <span class="badge bg-green text-white">Activo</span>
+            @else
+            <span class="badge bg-red text-white">Inactivo</span>
+            @endif
+          
+              </td>
           <td>
             <a href="{{ route('categorias.edit', $comentario->id) }}" class="ui button">Editar</a>
             <form action="{{ route('categorias.destroy', $comentario->id) }}" method="POST" style="display:inline;">

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Ciudad;
 
 class UsuarioController extends Controller
 {
@@ -11,13 +13,11 @@ class UsuarioController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-       {
-      $data = Usuario::all();
-
-      return view('usuarios.index', compact('data'));
-
-    }
+    { {
+            $data = Usuario::all();
+            
+            return view('usuarios.index', compact('data'));
+        }
     }
 
     /**
@@ -33,7 +33,42 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //realiza la validacion de los datos
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:255|unique:usuarios',
+            'movil' => 'required|min:11|unique:usuarios',
+            'email' => 'required|email|max:255|unique:usuarios',
+            'password' => 'required|min:8',
+            'rol' => 'required|in:admin,vendedor',
+            'ciudad_id' => 'required|max:255',
+
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        // dd($request->all());
+        // dd($request->nombre);
+
+
+        //    dd($request->all());
+        $usuario = new Usuario();
+
+
+        $usuario->nombre = $request->nombre;
+        $usuario->movil = $request->movil;
+        $usuario->email = strtolower($request->email);
+        $usuario->password = bcrypt($request->password);
+        $usuario->rol = $request->rol;
+        $usuario->ciudad_id = $request->ciudad_id;
+
+
+
+
+        $usuario->save();
+
+        return redirect('usuarios');
     }
 
     /**

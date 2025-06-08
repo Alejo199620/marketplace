@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ciudad;
+use Illuminate\Support\Facades\Validator;
 
 class CiudadController extends Controller
 {
@@ -32,8 +33,32 @@ class CiudadController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
+    
+         {
+        //realiza la validacion de los datos
+     $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:255|unique:ciudades',
+          
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+       // dd($request->all());
+       // dd($request->nombre);
+      
+
+    //    dd($request->all());
+       $ciudad = new Ciudad();
+
+
+        $ciudad->nombre = $request->nombre;
+       
+        $ciudad->save();
+
+        return redirect('ciudades');
+    
     }
 
     /**
