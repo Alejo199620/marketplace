@@ -20,7 +20,7 @@ class Imagen extends Model
     /**
      * Get the product that owns the image.
      */
-   public function producto()
+    public function producto()
     {
         return $this->belongsTo(Producto::class, 'producto_id');
     }

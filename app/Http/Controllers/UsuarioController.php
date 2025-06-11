@@ -15,7 +15,7 @@ class UsuarioController extends Controller
     public function index()
     { {
             $data = Usuario::all();
-            
+
             return view('usuarios.index', compact('data'));
         }
     }
@@ -36,7 +36,7 @@ class UsuarioController extends Controller
         //realiza la validacion de los datos
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|max:255|unique:usuarios',
-            'movil' => 'required|min:11|unique:usuarios',
+            'movil' => 'required|min:10|unique:usuarios',
             'email' => 'required|email|max:255|unique:usuarios',
             'password' => 'required|min:8',
             'rol' => 'required|in:admin,vendedor',

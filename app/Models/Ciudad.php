@@ -16,7 +16,7 @@ class Ciudad extends Model
         'estado',
     ];
 
-      public function usuarios()
+    public function usuarios()
     {
         return $this->hasMany(Usuario::class, 'ciudad_id');
     }
@@ -25,5 +25,4 @@ class Ciudad extends Model
     {
         return $this->hasMany(Producto::class, 'ciudad_id');
     }
-
 }

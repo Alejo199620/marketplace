@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
     use HasFactory;
 
@@ -21,9 +22,13 @@ class Usuario extends Model
         'ciudad_id',
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-    
-  public function ciudad()
+
+    public function ciudad()
     {
         return $this->belongsTo(Ciudad::class, 'ciudad_id');
     }
@@ -38,4 +43,3 @@ class Usuario extends Model
         return $this->hasMany(Comentario::class, 'usuario_id');
     }
 }
-    
