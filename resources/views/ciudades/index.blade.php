@@ -18,6 +18,16 @@
         border: 1px solid #ddd;
         box-shadow: 2px 2px 5px;
     }
+
+    table.ui.celled.table,
+    table.ui.celled.table th,
+    table.ui.celled.table td {
+        border: 1px solid #dee2e6 !important;
+    }
+
+    table.ui.celled.table {
+        border-collapse: collapse !important;
+    }
 </style>
 @stop
 
@@ -74,11 +84,30 @@
 
             </td>
             <td>
-                <a href="{{ route('categorias.edit', $ciudad->id) }}" class="ui button">Editar</a>
-                <form action="{{ route('categorias.destroy', $ciudad->id) }}" method="POST" style="display:inline;">
+                <a href="{{ url('ciudades/' . $ciudad->id . '/edit') }}" class="btn btn-default" title="Editar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="color:#3498db; cursor: pointer;">
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                    </svg>
+                </a>
+
+                <form action="{{ route('ciudades.destroy' , $ciudad->id) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="ui button red">Eliminar</button>
+                    <button type="submit" class="btn btn-default" title="Eliminar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="color:#e74c3c; cursor: pointer;">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path
+                                d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
+                            <line x1="10" y1="11" x2="10" y2="17" />
+                            <line x1="14" y1="11" x2="14" y2="17" />
+                        </svg>
+                    </button>
+
                 </form>
             </td>
         </tr>

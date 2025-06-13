@@ -3,6 +3,7 @@
 @section('styles')
 <link rel="stylesheet" href="{{ url('css/lightbox.min.css') }}">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
 
 <style>
     .error {
@@ -23,6 +24,16 @@
 
     .select2-container {
         z-index: 9999 !important;
+    }
+
+    table.ui.celled.table,
+    table.ui.celled.table th,
+    table.ui.celled.table td {
+        border: 1px solid #dee2e6 !important;
+    }
+
+    table.ui.celled.table {
+        border-collapse: collapse !important;
     }
 </style>
 
@@ -77,9 +88,25 @@
         @foreach ($data as $usuario)
         <tr>
             <td>{{ $usuario->nombre }}</td>
-            <td>{{ $usuario->movil }}</td>
+
+            <td>
+                @if ($usuario->movil)
+                {{ $usuario->movil }}
+                @else
+                <span class="badge bg-red text-white">Sin movil</span>
+                @endif
+            </td>
+
             <td>{{ $usuario->email }}</td>
-            <td>{{ $usuario->ciudad->nombre }}</td>
+
+
+            <td>
+                @if ($usuario->ciudad)
+                {{ $usuario->ciudad->nombre }}
+                @else
+                <span class="badge bg-red text-white">Sin ciudad</span>
+                @endif
+            </td>
             <td>
                 @if ($usuario->estado == 1)
                 <span class="badge bg-green text-white">Activo</span>
@@ -91,11 +118,29 @@
             <td>{{ $usuario->rol }}</td>
 
             <td>
-                <a href="{{ route('usuarios.edit', $usuario->id) }}" class="ui button">Editar</a>
-                <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST" style="display:inline;">
+                <a href="{{ url('usuarios/' . $usuario->id . '/edit') }}" class="btn btn-default" title="Editar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="color:#3498db; cursor: pointer;">
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                    </svg>
+                </a>
+
+                <form action="{{ route('usuarios.destroy' , $usuario->id) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="ui button red">Eliminar</button>
+                    <button type="submit" class="btn btn-default" title="Eliminar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="color:#e74c3c; cursor: pointer;">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path
+                                d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
+                            <line x1="10" y1="11" x2="10" y2="17" />
+                            <line x1="14" y1="11" x2="14" y2="17" />
+                        </svg>
+                    </button>
                 </form>
             </td>
         </tr>
@@ -227,6 +272,21 @@ $ciudades = \App\Models\Ciudad::all();
 
 @section('scripts')
 
+<script src="//cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/2.3.2/i18n/es-ES.json"
+            },
+            "order": [[1, 'asc']]
+        });
+    });
+</script>
 
 
 @if ($errors->any())
@@ -236,9 +296,6 @@ $ciudades = \App\Models\Ciudad::all();
             });
 </script>
 @endif
-
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
 <script>
     $(document).ready(function() {
             function initSelect2() {

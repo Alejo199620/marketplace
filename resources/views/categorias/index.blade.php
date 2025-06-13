@@ -2,7 +2,7 @@
 
 @section('styles')
 <link rel="stylesheet" href="{{ url('css/lightbox.min.css') }}">
-<link rel="stylesheet" href="//cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
 <style>
     .error {
         color: red;
@@ -22,6 +22,16 @@
         border-radius: 50px;
         border: 1px solid #ddd;
         box-shadow: 2px 2px 5px;
+    }
+
+    table.ui.celled.table,
+    table.ui.celled.table th,
+    table.ui.celled.table td {
+        border: 1px solid #dee2e6 !important;
+    }
+
+    table.ui.celled.table {
+        border-collapse: collapse !important;
     }
 </style>
 @stop
@@ -100,12 +110,11 @@
             <td>
 
                 <a href="{{ url('categorias/' . $categoria->id . '/edit') }}" class="btn btn-default" title="Editar">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M7 17v4h4l8 -8l-4 -4l-8 8z" />
-                        <path d="M16 5l3 3" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="color:#3498db; cursor: pointer;">
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                     </svg>
                 </a>
 
@@ -114,13 +123,14 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-default" title="Eliminar">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M4 7l16 0" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="color:#e74c3c; cursor: pointer;">
+                            <polyline points="3 6 5 6 21 6" />
                             <path
-                                d="M10 11l0 6m4 -6l0 6m-5 -10l1 -1h4l1 1m-6 1v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2 -2v-10m-10 -1h10a1.5 1.5 0 0 1 .5 .09m-11 -1.09v-2a1.5 1.5 0 0 1 .5 -1.09m11 .09h-10a1.5 1.5 0 0 1 -.5 -1.09v-2a1.5 1.5 0 0 1 .5 -1.09m10 .09h-10a1.5 1.5 0 0 0 -.5 1.09v2a1.5 1.5 0 0 0 .5 1.09" />
+                                d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
+                            <line x1="10" y1="11" x2="10" y2="17" />
+                            <line x1="14" y1="11" x2="14" y2="17" />
                         </svg>
                     </button>
                 </form>
@@ -230,7 +240,7 @@
     $(document).ready(function() {
         $('.table').DataTable({
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/2.3.2/i18n/es-ES.json"
+                "url": "https://cdn.datatables.net/plug-ins/2.3.2/i18n/es-ES.json"
             },
             "order": [[1, 'asc']]
         });

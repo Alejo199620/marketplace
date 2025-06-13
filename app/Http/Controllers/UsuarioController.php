@@ -83,8 +83,12 @@ class UsuarioController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
+
     {
-        //
+        $usuario = Usuario::findOrFail($id);
+        $ciudades = Ciudad::all();
+
+        return view('usuarios.edit', compact('usuario', 'ciudades'));
     }
 
     /**
@@ -92,7 +96,34 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:255|unique:usuarios,nombre,' . $id,
+            'movil' => 'required|min:10|unique:usuarios,movil,' . $id,
+            'email' => 'required|email|max:255|unique:usuarios,email,' . $id,
+            'password' => 'nullable|min:8',
+            'rol' => 'required|in:admin,vendedor',
+            'ciudad_id' => 'required|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $usuario = Usuario::findOrFail($id);
+
+        $usuario->nombre = $request->nombre;
+        $usuario->movil = $request->movil;
+        $usuario->email = strtolower($request->email);
+        if ($request->password) {
+            $usuario->password = bcrypt($request->password);
+        }
+        $usuario->rol = $request->rol;
+        $usuario->ciudad_id = $request->ciudad_id;
+
+        $usuario->save();
+
+        return redirect('usuarios')->with('message', 'Usuario editado correctamente')
+            ->with('type', 'info');
     }
 
     /**
@@ -100,6 +131,10 @@ class UsuarioController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $usuario = Usuario::findOrFail($id);
+        $usuario->delete();
+
+        return redirect('usuarios')->with('message', 'Usuario eliminado correctamente')
+            ->with('type', 'danger');
     }
 }

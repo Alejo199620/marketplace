@@ -1,5 +1,34 @@
 @extends('layout')
 
+@section('styles')
+<link rel="stylesheet" href="{{ url('css/lightbox.min.css') }}">
+<style>
+    .error {
+        color: red;
+        font-size: 0.875em;
+        margin-top: 10px;
+    }
+
+    .img-category {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+        border-radius: 50px;
+        border: 1px solid #ddd;
+        box-shadow: 2px 2px 5px;
+    }
+
+    table.ui.celled.table,
+    table.ui.celled.table th,
+    table.ui.celled.table td {
+        border: 1px solid #dee2e6 !important;
+    }
+
+    table.ui.celled.table {
+        border-collapse: collapse !important;
+    }
+</style>
+@stop
 @section('header')
 <div class="col">
 

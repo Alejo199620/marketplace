@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Ciudad;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CiudadController extends Controller
@@ -12,13 +12,11 @@ class CiudadController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-         {
-      $data = Ciudad::all();
+    { {
+            $data = Ciudad::all();
 
-      return view('ciudades.index', compact('data'));
-
-    }
+            return view('ciudades.index', compact('data'));
+        }
     }
 
     /**
@@ -33,32 +31,31 @@ class CiudadController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    
-         {
+
+    {
         //realiza la validacion de los datos
-     $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'nombre' => 'required|max:255|unique:ciudades',
-          
+
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-       // dd($request->all());
-       // dd($request->nombre);
-      
+        // dd($request->all());
+        // dd($request->nombre);
 
-    //    dd($request->all());
-       $ciudad = new Ciudad();
+
+        //    dd($request->all());
+        $ciudad = new Ciudad();
 
 
         $ciudad->nombre = $request->nombre;
-       
+
         $ciudad->save();
 
         return redirect('ciudades');
-    
     }
 
     /**
@@ -74,7 +71,9 @@ class CiudadController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $ciudad = Ciudad::findOrFail($id);
+
+        return view('ciudades.edit', compact('ciudad'));
     }
 
     /**
@@ -82,14 +81,34 @@ class CiudadController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:255|unique:ciudades,nombre,' . $id,
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+        $ciudad = Ciudad::findOrFail($id);
+        $ciudad->nombre = $request->nombre;
+        $ciudad->save();
+        return redirect('ciudades')->with('message', 'Ciudad editada correctamente')
+            ->with('type', 'info');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $ciudad = Ciudad::findOrFail($id);
+
+        if ($ciudad->productos()->count() > 0) {
+            return redirect('ciudades')->with('message', 'No se puede eliminar la ciudad')
+                ->with('type', 'warning');
+        }
+        $ciudad->delete();
+
+        return redirect('ciudades')->with('message', 'Ciudad eliminada correctamente')
+            ->with('type', 'danger');
     }
 }
