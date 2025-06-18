@@ -35,6 +35,10 @@
     table.ui.celled.table {
         border-collapse: collapse !important;
     }
+
+    .estado-badge:hover {
+        opacity: 0.8;
+    }
 </style>
 
 </style>
@@ -81,69 +85,84 @@
             <th scope="col">Ciudad</th>
             <th scope="col">Estado</th>
             <th scope="col">Rol</th>
+            <th scope="col">Ver</th>
             <th scope="col">Acciones</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($data as $usuario)
-        <tr>
-            <td>{{ $usuario->nombre }}</td>
+            <tr>
+                <td>{{ $usuario->nombre }}</td>
 
-            <td>
-                @if ($usuario->movil)
-                {{ $usuario->movil }}
-                @else
-                <span class="badge bg-red text-white">Sin movil</span>
-                @endif
-            </td>
+                <td>
+                    @if ($usuario->movil)
+                        {{ $usuario->movil }}
+                    @else
+                        <span class="badge bg-red text-white">Sin movil</span>
+                    @endif
+                </td>
 
-            <td>{{ $usuario->email }}</td>
+                <td>{{ $usuario->email }}</td>
 
 
-            <td>
-                @if ($usuario->ciudad)
-                {{ $usuario->ciudad->nombre }}
-                @else
-                <span class="badge bg-red text-white">Sin ciudad</span>
-                @endif
-            </td>
-            <td>
-                @if ($usuario->estado == 1)
-                <span class="badge bg-green text-white">Activo</span>
-                @else
-                <span class="badge bg-red text-white">Inactivo</span>
-                @endif
+                <td>
+                    @if ($usuario->ciudad)
+                        {{ $usuario->ciudad->nombre }}
+                    @else
+                        <span class="badge bg-red text-white">Sin ciudad</span>
+                    @endif
+                </td>
 
-            </td>
-            <td>{{ $usuario->rol }}</td>
+                <td>
+                    <span
+                        class="badge estado-badge cursor-pointer {{ $usuario->estado == 1 ? 'bg-green' : 'bg-red' }} text-white"
+                        data-id="{{ $usuario->id }}" data-estado="{{ $usuario->estado }}" title="Click para cambiar estado">
+                        {{ $usuario->estado == 1 ? 'Activo' : 'Inactivo' }}
+                    </span>
+                </td>
 
-            <td>
-                <a href="{{ url('usuarios/' . $usuario->id . '/edit') }}" class="btn btn-default" title="Editar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        style="color:#3498db; cursor: pointer;">
-                        <path d="M12 20h9" />
-                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                    </svg>
-                </a>
-
-                <form action="{{ route('usuarios.destroy' , $usuario->id) }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-default" title="Eliminar">
+                <td>{{ $usuario->rol }}</td>
+                <td>
+                    <a href="{{ route('usuarios.show', $usuario->id) }}" class="btn btn-default" title="Ver más">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            style="color:#e74c3c; cursor: pointer;">
-                            <polyline points="3 6 5 6 21 6" />
-                            <path
-                                d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
-                            <line x1="10" y1="11" x2="10" y2="17" />
-                            <line x1="14" y1="11" x2="14" y2="17" />
+                            style="color:#2ecc71; cursor: pointer;">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
                         </svg>
-                    </button>
-                </form>
-            </td>
-        </tr>
+                    </a>
+                </td>
+
+
+
+                <td>
+                    <a href="{{ url('usuarios/' . $usuario->id . '/edit') }}" class="btn btn-default" title="Editar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="color:#3498db; cursor: pointer;">
+                            <path d="M12 20h9" />
+                            <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                        </svg>
+                    </a>
+
+                    <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-default" title="Eliminar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                style="color:#e74c3c; cursor: pointer;">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path
+                                    d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
+                                <line x1="10" y1="11" x2="10" y2="17" />
+                                <line x1="14" y1="11" x2="14" y2="17" />
+                            </svg>
+                        </button>
+                    </form>
+                </td>
+            </tr>
         @endforeach
     </tbody>
 </table>
@@ -152,7 +171,7 @@
 
 @section('modals')
 @php
-$ciudades = \App\Models\Ciudad::all();
+    $ciudades = \App\Models\Ciudad::all();
 @endphp
 
 <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
@@ -175,7 +194,7 @@ $ciudades = \App\Models\Ciudad::all();
                         <input type="text" class="form-control" name="nombre" id="nombre"
                             placeholder="Ej: Nombre Completo" required autofocus value="{{ old('nombre') }}">
                         @error('nombre')
-                        <div class="error">{{ $message }}</div>
+                            <div class="error">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -184,7 +203,7 @@ $ciudades = \App\Models\Ciudad::all();
                         <input type="text" class="form-control" name="email" id="email" placeholder="example@gmail.com"
                             required autofocus value="{{ old('email') }}">
                         @error('email')
-                        <div class="error">{{ $message }}</div>
+                            <div class="error">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -196,13 +215,13 @@ $ciudades = \App\Models\Ciudad::all();
                             <select class="form-control" name="ciudad_id" id="ciudad" required autofocus>
                                 <option value="">Seleccione una ciudad</option>
                                 @foreach ($ciudades as $ciudad)
-                                <option value="{{ $ciudad->id }}" {{ old('ciudad_id')==$ciudad->id ? 'selected' : '' }}>
-                                    {{ $ciudad->nombre }}
-                                </option>
+                                    <option value="{{ $ciudad->id }}" {{ old('ciudad_id') == $ciudad->id ? 'selected' : '' }}>
+                                        {{ $ciudad->nombre }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('ciudad_id')
-                            <div class="error">{{ $message }}</div>
+                                <div class="error">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -210,13 +229,13 @@ $ciudades = \App\Models\Ciudad::all();
                             <label class="form-label">Rol</label>
                             <select class="form-control" name="rol" id="rol" required autofocus>
                                 <option value="">Seleccione un rol</option>
-                                <option value="admin" {{ old('rol')=='admin' ? 'selected' : '' }}>Administrador
+                                <option value="admin" {{ old('rol') == 'admin' ? 'selected' : '' }}>Administrador
                                 </option>
-                                <option value="vendedor" {{ old('rol')=='vendedor' ? 'selected' : '' }}>Vendedor
+                                <option value="vendedor" {{ old('rol') == 'vendedor' ? 'selected' : '' }}>Vendedor
                                 </option>
                             </select>
                             @error('rol')
-                            <div class="error">{{ $message }}</div>
+                                <div class="error">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -228,7 +247,7 @@ $ciudades = \App\Models\Ciudad::all();
                                     <input type="text" class="form-control" id="movil" name="movil" required
                                         value="{{ old('movil') }}">
                                     @error('movil')
-                                    <div class="error">{{ $message }}</div>
+                                        <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -239,7 +258,7 @@ $ciudades = \App\Models\Ciudad::all();
                                     <input type="password" class="form-control" id="password" name="password"
                                         placeholder="Minimo 8 caracteres" required value="{{ old('password') }}">
                                     @error('password')
-                                    <div class="error">{{ $message }}</div>
+                                        <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -278,7 +297,56 @@ $ciudades = \App\Models\Ciudad::all();
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function () {
+        // Seleccionar todos los badges de estado
+        const estadoBadges = document.querySelectorAll('.estado-badge');
+
+        // Agregar evento click a cada badge
+        estadoBadges.forEach(badge => {
+            badge.addEventListener('click', function () {
+                const productoId = this.getAttribute('data-id');
+                const estadoActual = parseInt(this.getAttribute('data-estado'));
+                const nuevoEstado = estadoActual === 1 ? 0 : 1;
+
+                // Mostrar loader opcional
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                // Enviar petición AJAX
+                fetch(`/productos/${productoId}/cambiar-estado`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        estado: nuevoEstado
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Actualizar el badge visualmente
+                            this.setAttribute('data-estado', nuevoEstado);
+                            this.classList.toggle('bg-green');
+                            this.classList.toggle('bg-red');
+                            this.textContent = nuevoEstado === 1 ? 'Activo' : 'Inactivo';
+                        } else {
+                            alert('Error al cambiar el estado');
+                            this.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        this.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                    });
+            });
+        });
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
         $('.table').DataTable({
             "language": {
                 "url": "https://cdn.datatables.net/plug-ins/2.3.2/i18n/es-ES.json"
@@ -290,39 +358,41 @@ $ciudades = \App\Models\Ciudad::all();
 
 
 @if ($errors->any())
-<script>
-    $(document).ready(function() {
-                $('#modal-report').modal('show');
-            });
-</script>
+    <script>
+        $(document).ready(function () {
+            $('#modal-report').modal('show');
+        });
+    </script>
 @endif
 <script>
-    $(document).ready(function() {
-            function initSelect2() {
-                $('#ciudad').select2({
-                    dropdownParent: $('#modal-report'),
-                    placeholder: "Seleccione una ciudad",
-                    width: '100%'
-                });
-
-                $('#rol').select2({
-                    dropdownParent: $('#modal-report'),
-                    placeholder: "Seleccione un rol",
-                    width: '100%'
-                });
-            }
-
-            initSelect2();
-
-            @if ($errors->any())
-                $('#modal-report').modal('show');
-            @endif
-
-            $('#modal-report').on('shown.bs.modal', function() {
-                initSelect2();
+    $(document).ready(function () {
+        function initSelect2() {
+            $('#ciudad').select2({
+                dropdownParent: $('#modal-report'),
+                placeholder: "Seleccione una ciudad",
+                width: '100%'
             });
+
+            $('#rol').select2({
+                dropdownParent: $('#modal-report'),
+                placeholder: "Seleccione un rol",
+                width: '100%'
+            });
+        }
+
+        initSelect2();
+
+        @if ($errors->any())
+            $('#modal-report').modal('show');
+        @endif
+
+        $('#modal-report').on('shown.bs.modal', function () {
+            initSelect2();
         });
+    });
 </script>
+
+
 
 
 @stop

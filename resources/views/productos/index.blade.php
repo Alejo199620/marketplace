@@ -42,6 +42,14 @@
     table.ui.celled.table {
         border-collapse: collapse !important;
     }
+
+    <style>.cursor-pointer {
+        cursor: pointer;
+    }
+
+    .estado-badge:hover {
+        opacity: 0.8;
+    }
 </style>
 @stop
 
@@ -79,65 +87,79 @@
             <th scope="col">Valor</th>
             <th scope="col">Estado Producto</th>
             <th scope="col">Estado</th>
+            <th scope="col">Ver +</th>
             <th scope="col">Acciones</th>
+
         </tr>
     </thead>
     <tbody>
         @foreach ($data as $producto)
-        <tr>
-            <td>
-                @if ($producto->imagen)
-                <a href="{{ url('img/productos/' . $producto->imagen) }}" data-lightbox="{{ $producto->nombre }}"
-                    data-title="{{ $producto->nombre }}">
-                    <img src="{{ url('img/productos/' . $producto->imagen) }}" class="img-category">
-                </a>
-                @else
-                <a href="{{ url('img/productos/avatar.png') }}" data-lightbox="{{ $producto->nombre }}"
-                    data-title="{{ $producto->nombre }}">
-                    <img src="{{ url('img/productos/avatar.png') }}" class="img-category">
-                </a>
-                @endif
-            </td>
-            <td>{{ $producto->titulo }}</td>
-            <td>{{ $producto->slug }}</td>
-            <td class="col-descripcion" title="{{ $producto->descripcion }}">
-                {{ $producto->descripcion }}
-            </td>
-            <td>{{ $producto->valor }}</td>
-            <td>{{ $producto->estado_producto }}</td>
-            <td>
-                @if ($producto->estado == 1)
-                <span class="badge bg-green text-white">Activo</span>
-                @else
-                <span class="badge bg-red text-white">Inactivo</span>
-                @endif
-            </td>
-            <td>
-                <a href="{{ url('productos/' . $producto->id . '/edit') }}" class="btn btn-default" title="Editar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        style="color:#3498db; cursor: pointer;">
-                        <path d="M12 20h9" />
-                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                    </svg>
-                </a>
+            <tr>
+                <td>
+                    @if ($producto->imagen)
+                        <a href="{{ url('img/productos/' . $producto->imagen) }}" data-lightbox="{{ $producto->nombre }}"
+                            data-title="{{ $producto->nombre }}">
+                            <img src="{{ url('img/productos/' . $producto->imagen) }}" class="img-category">
+                        </a>
+                    @else
+                        <a href="{{ url('img/productos/avatar.png') }}" data-lightbox="{{ $producto->nombre }}"
+                            data-title="{{ $producto->nombre }}">
+                            <img src="{{ url('img/productos/avatar.png') }}" class="img-category">
+                        </a>
+                    @endif
+                </td>
+                <td>{{ $producto->titulo }}</td>
+                <td>{{ $producto->slug }}</td>
+                <td class="col-descripcion" title="{{ $producto->descripcion }}">
+                    {{ $producto->descripcion }}
+                </td>
+                <td>{{ $producto->valor }}</td>
+                <td>{{ $producto->estado_producto }}</td>
 
-                <form action="{{ route('productos.destroy' , $producto->id) }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-default" title="Eliminar">
+                <td>
+                    <span
+                        class="badge estado-badge cursor-pointer {{ $producto->estado == 1 ? 'bg-green' : 'bg-red' }} text-white"
+                        data-id="{{ $producto->id }}" data-estado="{{ $producto->estado }}">
+                        {{ $producto->estado == 1 ? 'Activo' : 'Inactivo' }}
+                    </span>
+                </td>
+
+                <td>
+                    <a href="{{ route('productos.show', $producto->id) }}" class="btn btn-default" title="Ver más">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            style="color:#e74c3c; cursor: pointer;">
-                            <polyline points="3 6 5 6 21 6" />
-                            <path
-                                d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
-                            <line x1="10" y1="11" x2="10" y2="17" />
-                            <line x1="14" y1="11" x2="14" y2="17" />
+                            style="color:#2ecc71; cursor: pointer;">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
                         </svg>
-                </form>
-            </td>
-        </tr>
+                    </a>
+                <td>
+                    <a href="{{ url('productos/' . $producto->id . '/edit') }}" class="btn btn-default" title="Editar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="color:#3498db; cursor: pointer;">
+                            <path d="M12 20h9" />
+                            <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                        </svg>
+                    </a>
+
+                    <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-default" title="Eliminar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                style="color:#e74c3c; cursor: pointer;">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path
+                                    d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
+                                <line x1="10" y1="11" x2="10" y2="17" />
+                                <line x1="14" y1="11" x2="14" y2="17" />
+                            </svg>
+                    </form>
+                </td>
+            </tr>
         @endforeach
     </tbody>
 </table>
@@ -145,9 +167,9 @@
 
 @section('modals')
 @php
-$categorias = \App\Models\Categoria::all();
-$ciudades = \App\Models\Ciudad::all();
-$usuarios = \App\Models\Usuario::all();
+    $categorias = \App\Models\Categoria::all();
+    $ciudades = \App\Models\Ciudad::all();
+    $usuarios = \App\Models\Usuario::all();
 @endphp
 
 <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
@@ -163,13 +185,13 @@ $usuarios = \App\Models\Usuario::all();
                     @csrf
 
                     @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     @endif
 
                     <div class="mb-3">
@@ -177,7 +199,7 @@ $usuarios = \App\Models\Usuario::all();
                         <input type="text" class="form-control" name="titulo" id="titulo"
                             placeholder="Ej: Nombre del producto" required autofocus value="{{ old('titulo') }}">
                         @error('titulo')
-                        <div class="error">{{ $message }}</div>
+                            <div class="error">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -188,7 +210,7 @@ $usuarios = \App\Models\Usuario::all();
                                 <input type="text" class="form-control" id="slug" name="slug" required
                                     value="{{ old('slug') }}">
                                 @error('slug')
-                                <div class="error">{{ $message }}</div>
+                                    <div class="error">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
@@ -198,7 +220,7 @@ $usuarios = \App\Models\Usuario::all();
                                 <label class="form-label">Imagen</label>
                                 <input type="file" class="form-control" name="imagen" accept="image/*">
                                 @error('imagen')
-                                <div class="error">{{ $message }}</div>
+                                    <div class="error">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
@@ -211,7 +233,7 @@ $usuarios = \App\Models\Usuario::all();
                                 <input type="number" step="0.01" class="form-control" name="valor" required
                                     value="{{ old('valor') }}">
                                 @error('valor')
-                                <div class="error">{{ $message }}</div>
+                                    <div class="error">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
@@ -220,15 +242,15 @@ $usuarios = \App\Models\Usuario::all();
                             <div>
                                 <label class="form-label">Estado del producto</label>
                                 <select class="form-control" name="estado_producto" required>
-                                    <option value="nuevo" {{ old('estado_producto')=='nuevo' ? 'selected' : '' }}>Nuevo
+                                    <option value="nuevo" {{ old('estado_producto') == 'nuevo' ? 'selected' : '' }}>Nuevo
                                     </option>
-                                    <option value="poco uso" {{ old('estado_producto')=='poco uso' ? 'selected' : '' }}>
+                                    <option value="poco uso" {{ old('estado_producto') == 'poco uso' ? 'selected' : '' }}>
                                         Poco uso</option>
-                                    <option value="usado" {{ old('estado_producto')=='usado' ? 'selected' : '' }}>Usado
+                                    <option value="usado" {{ old('estado_producto') == 'usado' ? 'selected' : '' }}>Usado
                                     </option>
                                 </select>
                                 @error('estado_producto')
-                                <div class="error">{{ $message }}</div>
+                                    <div class="error">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
@@ -240,14 +262,14 @@ $usuarios = \App\Models\Usuario::all();
                             <select class="form-control" name="categoria_id" required>
                                 <option value="">Seleccionar</option>
                                 @foreach($categorias as $categoria)
-                                <option value="{{ $categoria->id }}" {{ old('categoria_id')==$categoria->id ? 'selected'
+                                                            <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected'
                                     : '' }}>
-                                    {{ $categoria->nombre }}
-                                </option>
+                                                                {{ $categoria->nombre }}
+                                                            </option>
                                 @endforeach
                             </select>
                             @error('categoria_id')
-                            <div class="error">{{ $message }}</div>
+                                <div class="error">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -256,14 +278,14 @@ $usuarios = \App\Models\Usuario::all();
                             <select class="form-control" name="usuario_id" required>
                                 <option value="">Seleccionar</option>
                                 @foreach($usuarios as $usuario)
-                                <option value="{{ $usuario->id }}" {{ old('usuario_id')==$usuario->id ? 'selected' : ''
-                                    }}>
-                                    {{ $usuario->nombre }}
-                                </option>
+                                    <option value="{{ $usuario->id }}" {{ old('usuario_id') == $usuario->id ? 'selected' : ''
+                                        }}>
+                                        {{ $usuario->nombre }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('usuario_id')
-                            <div class="error">{{ $message }}</div>
+                                <div class="error">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -272,13 +294,13 @@ $usuarios = \App\Models\Usuario::all();
                             <select class="form-control" name="ciudad_id" required>
                                 <option value="">Seleccionar</option>
                                 @foreach($ciudades as $ciudad)
-                                <option value="{{ $ciudad->id }}" {{ old('ciudad_id')==$ciudad->id ? 'selected' : '' }}>
-                                    {{ $ciudad->nombre }}
-                                </option>
+                                    <option value="{{ $ciudad->id }}" {{ old('ciudad_id') == $ciudad->id ? 'selected' : '' }}>
+                                        {{ $ciudad->nombre }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('ciudad_id')
-                            <div class="error">{{ $message }}</div>
+                                <div class="error">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -288,7 +310,7 @@ $usuarios = \App\Models\Usuario::all();
                             <textarea class="form-control" rows="3"
                                 name="descripcion">{{ old('descripcion') }}</textarea>
                             @error('descripcion')
-                            <div class="error">{{ $message }}</div>
+                                <div class="error">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -322,7 +344,7 @@ $usuarios = \App\Models\Usuario::all();
 <script src="//cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('.table').DataTable({
             "language": {
                 "url": "https://cdn.datatables.net/plug-ins/2.3.2/i18n/es-ES.json"
@@ -332,37 +354,83 @@ $usuarios = \App\Models\Usuario::all();
     });
 </script>
 <script>
-    $(document).ready(function() {
-            $('select').select2({
-                dropdownParent: $('#modal-report'),
-                width: '100%'
-            });
-
-            @if($errors->any())
-                $('#modal-report').modal('show');
-            @endif
-
-            document.getElementById('titulo').addEventListener('input', function(e) {
-                const titulo = e.target.value;
-                const slug = generateSlug(titulo);
-                document.getElementById('slug').value = slug;
-            });
-
-            function generateSlug(text) {
-                return text
-                    .toString()
-                    .toLowerCase()
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                    .replace(/\s+/g, '-')
-                    .replace(/[^\w\-]+/g, '')
-                    .replace(/\-\-+/g, '-')
-                    .replace(/^-+/, '')
-                    .replace(/-+$/, '');
-            }
+    $(document).ready(function () {
+        $('select').select2({
+            dropdownParent: $('#modal-report'),
+            width: '100%'
         });
-</script>
 
+        @if($errors->any())
+            $('#modal-report').modal('show');
+        @endif
+
+        document.getElementById('titulo').addEventListener('input', function (e) {
+            const titulo = e.target.value;
+            const slug = generateSlug(titulo);
+            document.getElementById('slug').value = slug;
+        });
+
+        function generateSlug(text) {
+            return text
+                .toString()
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/[^\w\-]+/g, '')
+                .replace(/\-\-+/g, '-')
+                .replace(/^-+/, '')
+                .replace(/-+$/, '');
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Seleccionar todos los badges de estado
+        const estadoBadges = document.querySelectorAll('.estado-badge');
+
+        // Agregar evento click a cada badge
+        estadoBadges.forEach(badge => {
+            badge.addEventListener('click', function () {
+                const productoId = this.getAttribute('data-id');
+                const estadoActual = parseInt(this.getAttribute('data-estado'));
+                const nuevoEstado = estadoActual === 1 ? 0 : 1;
+
+                // Mostrar loader opcional
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                // Enviar petición AJAX
+                fetch(`/productos/${productoId}/cambiar-estado`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        estado: nuevoEstado
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Actualizar el badge visualmente
+                            this.setAttribute('data-estado', nuevoEstado);
+                            this.classList.toggle('bg-green');
+                            this.classList.toggle('bg-red');
+                            this.textContent = nuevoEstado === 1 ? 'Activo' : 'Inactivo';
+                        } else {
+                            alert('Error al cambiar el estado');
+                            this.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        this.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                    });
+            });
+        });
+    });
+</script>
 
 
 @stop

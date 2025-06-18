@@ -74,10 +74,16 @@ class ProductoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+public function show(Producto $producto)
+{
+    $productosRelacionados = Producto::where('categoria_id', $producto->categoria_id)
+                                    ->where('id', '!=', $producto->id)
+                                    ->inRandomOrder()
+                                    ->limit(3)
+                                    ->get();
+    
+    return view('productos.show', compact('producto', 'productosRelacionados'));
+}
 
     /**
      * Show the form for editing the specified resource.
@@ -139,4 +145,20 @@ class ProductoController extends Controller
         return redirect('productos')->with('message', 'Producto eliminado correctamente')
             ->with('type', 'danger');
     }
+
+    public function cambiarEstado(Producto $producto, Request $request)
+{
+    $request->validate([
+        'estado' => 'required|boolean'
+    ]);
+
+    $producto->estado = $request->estado;
+    $producto->save();
+
+    return response()->json([
+        'success' => true,
+        'nuevoEstado' => $producto->estado,
+        'nuevoTexto' => $producto->estado ? 'Activo' : 'Inactivo'
+    ]);
+}
 }

@@ -2,6 +2,7 @@
 
 @section('styles')
 <link rel="stylesheet" href="{{ url('css/lightbox.min.css') }}">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
 <style>
     .error {
         color: red;
@@ -99,3 +100,25 @@
 </table>
 
 @stop
+
+@section('scripts')
+
+<script src="//cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+
+
+
+
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/2.3.2/i18n/es-ES.json"
+            },
+            "order": [[1, 'asc']]
+        });
+    });
+</script>
+
+
+@stop
+

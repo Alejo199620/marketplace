@@ -74,11 +74,11 @@ class UsuarioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
-
+  public function show(Usuario $usuario)
+{
+    $usuario->load('productos', 'ciudad');
+    return view('usuarios.show', compact('usuario'));
+}
     /**
      * Show the form for editing the specified resource.
      */
@@ -137,4 +137,20 @@ class UsuarioController extends Controller
         return redirect('usuarios')->with('message', 'Usuario eliminado correctamente')
             ->with('type', 'danger');
     }
+    
+       public function cambiarEstado(Usuario $usuario, Request $request)
+{
+    $request->validate([
+        'estado' => 'required|boolean'
+    ]);
+
+    $usuario->estado = $request->estado;
+    $usuario->save();
+
+    return response()->json([
+        'success' => true,
+        'nuevoEstado' => $usuario->estado,
+        'nuevoTexto' => $usuario->estado ? 'Activo' : 'Inactivo'
+    ]);
+}
 }

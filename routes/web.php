@@ -31,7 +31,18 @@ Route::get('/register', function () {
 
 Route::get('/terminos-condiciones', function () {
     return view('terminos');
+
 });
+
+Route::get('/', function () {
+    return view('welcome'); // O la vista que uses para tu página de inicio
+})->name('home');
+
+Route::get('/productos/{producto}', [ProductoController::class, 'show'])->name('productos.show');
+Route::get('/usuarios/{usuario}', [UsuarioController::class, 'show'])->name('usuarios.show');
+
+Route::post('/productos/{producto}/cambiar-estado', [ProductoController::class, 'cambiarEstado'])->name('productos.cambiar-estado');
+Route::post('/usuarios/{usuario}/cambiar-estado', [UsuarioController::class, 'cambiarEstado'])->name('usuarios.cambiar-estado');
 
 Route::post('register', [LoginController::class, 'register']);
 Route::post('check', [LoginController::class, 'check']);
