@@ -109,11 +109,16 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
-            <!-- Photo -->
-            <div class="bg-cover h-100 min-vh-100" style="background-image: url(./static/photos/fondo.avif)">
-            </div>
-        </div>
+       <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
+    <!-- Photo -->
+    <div class="bg-cover h-100 min-vh-100"
+         style="background-image: url(./static/photos/fondo1.jpg);
+
+                background-size: 1020px 800px;  <!-- Reduce al 90% del contenedor -->
+                background-position: center;
+                background-repeat: no-repeat;">
+    </div>
+</div>
     </div>
     <!-- Libs JS -->
     <!-- Tabler Core -->

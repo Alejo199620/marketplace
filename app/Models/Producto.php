@@ -22,7 +22,7 @@ class Producto extends Model
 /**
      * Get the category that owns the product.
      */
-  
+
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'categoria_id');
@@ -47,4 +47,7 @@ class Producto extends Model
     {
         return $this->hasMany(Imagen::class, 'producto_id');
     }
+
+
+
 }

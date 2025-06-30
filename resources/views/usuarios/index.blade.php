@@ -1,6 +1,8 @@
 @extends('layout')
 
 @section('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <link rel="stylesheet" href="{{ url('css/lightbox.min.css') }}">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
@@ -79,6 +81,7 @@
 
     <thead>
         <tr>
+            <th scope="col">Imagen</th>
             <th scope="col">Nombre</th>
             <th scope="col">Movil</th>
             <th scope="col">Email</th>
@@ -92,6 +95,17 @@
     <tbody>
         @foreach ($data as $usuario)
             <tr>
+                <td>
+                    @php
+                        $userImage = $usuario->imagen;
+                        $isDefault = Str::startsWith($userImage, 'static/avatars/');
+                    @endphp
+
+                    <img src="{{ asset($isDefault ? $userImage : 'img/usuarios/' . basename($userImage)) }}"
+                        class="rounded-circle border" width="40" height="40" style="object-fit: cover;"
+                        alt="Foto de {{ $usuario->nombre }}" onerror="this.src='{{ asset('static/avatars/avatar.jpg') }}'">
+                </td>
+
                 <td>{{ $usuario->nombre }}</td>
 
                 <td>
@@ -112,12 +126,12 @@
                         <span class="badge bg-red text-white">Sin ciudad</span>
                     @endif
                 </td>
-
                 <td>
                     <span
-                        class="badge estado-badge cursor-pointer {{ $usuario->estado == 1 ? 'bg-green' : 'bg-red' }} text-white"
-                        data-id="{{ $usuario->id }}" data-estado="{{ $usuario->estado }}" title="Click para cambiar estado">
-                        {{ $usuario->estado == 1 ? 'Activo' : 'Inactivo' }}
+                        class="badge estado-badge cursor-pointer {{ $usuario->estado ? 'bg-green' : 'bg-red' }} text-white"
+                        data-id="{{ $usuario->id }}" data-estado="{{ $usuario->estado }}" title="Click para cambiar estado"
+                        style="transition: all 0.3s ease;">
+                        {{ $usuario->estado ? 'Activo' : 'Inactivo' }}
                     </span>
                 </td>
 
@@ -189,6 +203,8 @@
 
                     @csrf
 
+
+
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
                         <input type="text" class="form-control" name="nombre" id="nombre"
@@ -198,13 +214,25 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="text" class="form-control" name="email" id="email" placeholder="example@gmail.com"
-                            required autofocus value="{{ old('email') }}">
-                        @error('email')
-                            <div class="error">{{ $message }}</div>
-                        @enderror
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="text" class="form-control" name="email" id="email"
+                                placeholder="example@gmail.com" required autofocus value="{{ old('email') }}">
+                            @error('email')
+                                <div class="error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div>
+                                <label class="form-label">Imagen</label>
+                                <input type="file" class="form-control" name="imagen" accept="image/*">
+                                @error('imagen')
+                                    <div class="error">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -291,53 +319,70 @@
 
 @section('scripts')
 
+@section('scripts')
+<!-- Cargar SweetAlert2 primero -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Luego tus otros scripts -->
 <script src="//cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Seleccionar todos los badges de estado
         const estadoBadges = document.querySelectorAll('.estado-badge');
 
-        // Agregar evento click a cada badge
         estadoBadges.forEach(badge => {
             badge.addEventListener('click', function () {
-                const productoId = this.getAttribute('data-id');
+                const usuarioId = this.getAttribute('data-id');
                 const estadoActual = parseInt(this.getAttribute('data-estado'));
                 const nuevoEstado = estadoActual === 1 ? 0 : 1;
+                const badge = this;
 
-                // Mostrar loader opcional
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                // Mostrar loader
+                badge.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
                 // Enviar petición AJAX
-                fetch(`/productos/${productoId}/cambiar-estado`, {
+                fetch(`/usuarios/${usuarioId}/cambiar-estado`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    body: JSON.stringify({
-                        estado: nuevoEstado
-                    })
+                    body: JSON.stringify({ estado: nuevoEstado })
                 })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
                             // Actualizar el badge visualmente
-                            this.setAttribute('data-estado', nuevoEstado);
-                            this.classList.toggle('bg-green');
-                            this.classList.toggle('bg-red');
-                            this.textContent = nuevoEstado === 1 ? 'Activo' : 'Inactivo';
+                            badge.setAttribute('data-estado', nuevoEstado);
+                            badge.classList.toggle('bg-green');
+                            badge.classList.toggle('bg-red');
+                            badge.textContent = nuevoEstado === 1 ? 'Activo' : 'Inactivo';
+
+                            // Mostrar notificación de éxito
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Estado actualizado',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
                         } else {
-                            alert('Error al cambiar el estado');
-                            this.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                            badge.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message || 'No se pudo cambiar el estado'
+                            });
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        this.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                        badge.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al cambiar el estado'
+                        });
                     });
             });
         });

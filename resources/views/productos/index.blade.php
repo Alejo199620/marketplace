@@ -1,6 +1,8 @@
 @extends('layout')
 
 @section('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <link rel="stylesheet" href="{{ url('css/lightbox.min.css') }}">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
@@ -119,7 +121,8 @@
                 <td>
                     <span
                         class="badge estado-badge cursor-pointer {{ $producto->estado == 1 ? 'bg-green' : 'bg-red' }} text-white"
-                        data-id="{{ $producto->id }}" data-estado="{{ $producto->estado }}">
+                        data-id="{{ $producto->id }}" data-estado="{{ $producto->estado }}"
+                        title="Click para cambiar estado">
                         {{ $producto->estado == 1 ? 'Activo' : 'Inactivo' }}
                     </span>
                 </td>
@@ -279,7 +282,7 @@
                                 <option value="">Seleccionar</option>
                                 @foreach($usuarios as $usuario)
                                     <option value="{{ $usuario->id }}" {{ old('usuario_id') == $usuario->id ? 'selected' : ''
-                                        }}>
+                                            }}>
                                         {{ $usuario->nombre }}
                                     </option>
                                 @endforeach
@@ -384,20 +387,20 @@
         }
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Seleccionar todos los badges de estado
         const estadoBadges = document.querySelectorAll('.estado-badge');
 
-        // Agregar evento click a cada badge
         estadoBadges.forEach(badge => {
             badge.addEventListener('click', function () {
                 const productoId = this.getAttribute('data-id');
                 const estadoActual = parseInt(this.getAttribute('data-estado'));
                 const nuevoEstado = estadoActual === 1 ? 0 : 1;
+                const badge = this;
 
-                // Mostrar loader opcional
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                // Mostrar loader
+                badge.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
                 // Enviar petición AJAX
                 fetch(`/productos/${productoId}/cambiar-estado`, {
@@ -406,31 +409,45 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    body: JSON.stringify({
-                        estado: nuevoEstado
-                    })
+                    body: JSON.stringify({ estado: nuevoEstado })
                 })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
                             // Actualizar el badge visualmente
-                            this.setAttribute('data-estado', nuevoEstado);
-                            this.classList.toggle('bg-green');
-                            this.classList.toggle('bg-red');
-                            this.textContent = nuevoEstado === 1 ? 'Activo' : 'Inactivo';
+                            badge.setAttribute('data-estado', nuevoEstado);
+                            badge.classList.toggle('bg-green');
+                            badge.classList.toggle('bg-red');
+                            badge.textContent = nuevoEstado === 1 ? 'Activo' : 'Inactivo';
+
+                            // Mostrar notificación de éxito
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Estado actualizado',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
                         } else {
-                            alert('Error al cambiar el estado');
-                            this.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                            badge.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message || 'No se pudo cambiar el estado'
+                            });
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        this.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                        badge.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al cambiar el estado'
+                        });
                     });
             });
         });
     });
 </script>
-
 
 @stop

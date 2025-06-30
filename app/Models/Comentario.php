@@ -10,14 +10,8 @@ class Comentario extends Model
     use HasFactory;
 
     protected $table = 'comentarios';
+protected $fillable = ['descripcion', 'valoracion', 'estado', 'usuario_id', 'producto_id'];
 
-    protected $fillable = [
-        'producto_id',
-        'usuario_id',
-        'descripcion',
-        'valoracion',
-        'estado',
-    ];
 
   public function producto()
     {

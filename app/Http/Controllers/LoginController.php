@@ -25,9 +25,11 @@ class LoginController extends Controller
         }
 
         $usuario = new Usuario();
+
         $usuario->nombre = $request->nombre;
         $usuario->email = $request->email;
         $usuario->password = Hash::make($request->password);
+        $usuario->imagen = 'static/avatars/avatar.jpg';
         $usuario->save();
 
         return redirect('login')

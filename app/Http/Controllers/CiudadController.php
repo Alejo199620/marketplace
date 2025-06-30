@@ -111,4 +111,22 @@ class CiudadController extends Controller
         return redirect('ciudades')->with('message', 'Ciudad eliminada correctamente')
             ->with('type', 'danger');
     }
+ public function cambiarEstado(Request $request, $id)
+{
+    try {
+        $ciudad = Ciudad::findOrFail($id);
+        $ciudad->estado = $request->estado;
+        $ciudad->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Estado actualizado correctamente'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
 }

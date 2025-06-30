@@ -35,6 +35,7 @@ class UsuarioController extends Controller
     {
         //realiza la validacion de los datos
         $validator = Validator::make($request->all(), [
+            'imagen' => 'nullable|image',
             'nombre' => 'required|max:255|unique:usuarios',
             'movil' => 'required|min:10|unique:usuarios',
             'email' => 'required|email|max:255|unique:usuarios',
@@ -55,7 +56,14 @@ class UsuarioController extends Controller
         //    dd($request->all());
         $usuario = new Usuario();
 
-
+         if ($request->hasFile('imagen')) {
+            $file = $request->file('imagen');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('img/usuarios'), $filename);
+            $usuario->imagen = $filename;
+        } else {
+            $usuario->imagen = null; // O puedes asignar un valor por defecto
+        }
         $usuario->nombre = $request->nombre;
         $usuario->movil = $request->movil;
         $usuario->email = strtolower($request->email);
@@ -97,6 +105,7 @@ class UsuarioController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
+            'imagen' => 'nullable|image',
             'nombre' => 'required|max:255|unique:usuarios,nombre,' . $id,
             'movil' => 'required|min:10|unique:usuarios,movil,' . $id,
             'email' => 'required|email|max:255|unique:usuarios,email,' . $id,
@@ -111,6 +120,14 @@ class UsuarioController extends Controller
 
         $usuario = Usuario::findOrFail($id);
 
+           if ($request->hasFile('imagen')) {
+            $file = $request->file('imagen');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('img/usuarios'), $filename);
+            $usuario->imagen = $filename;
+        } else {
+            $usuario->imagen = null; // O puedes asignar un valor por defecto
+        }
         $usuario->nombre = $request->nombre;
         $usuario->movil = $request->movil;
         $usuario->email = strtolower($request->email);
@@ -137,7 +154,7 @@ class UsuarioController extends Controller
         return redirect('usuarios')->with('message', 'Usuario eliminado correctamente')
             ->with('type', 'danger');
     }
-    
+
        public function cambiarEstado(Usuario $usuario, Request $request)
 {
     $request->validate([

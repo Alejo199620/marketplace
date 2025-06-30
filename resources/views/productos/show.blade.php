@@ -185,52 +185,7 @@
             </div>
         </div>
 
-        @if($productosRelacionados->count() > 0)
-            <div class="row mt-5">
-                <div class="col-12">
-                    <h3 class="mb-4">Productos relacionados</h3>
-                    <div class="row">
-                        @foreach($productosRelacionados as $relacionado)
-                            <div class="col-md-4 mb-4">
-                                <div class="card h-100">
-                                    @if($relacionado->imagen)
-                                        <img src="{{ url('img/productos/' . $relacionado->imagen) }}" class="card-img-top"
-                                            alt="{{ $relacionado->titulo }}" style="height: 200px; object-fit: cover;">
-                                    @else
-                                        <img src="{{ url('img/productos/avatar.png') }}" class="card-img-top" alt="Imagen por defecto"
-                                            style="height: 200px; object-fit: cover;">
-                                    @endif
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ $relacionado->titulo }}</h5>
-                                        <p class="card-text text-success fw-bold">${{ number_format($relacionado->valor, 2) }}</p>
-                                        <span class="badge bg-info text-white">{{ ucfirst($relacionado->estado_producto) }}</span>
-                                    </div>
-                                    <div class="card-footer bg-transparent">
-                                        <a href="{{ route('productos.show', $relacionado->id) }}" class="btn btn-sm btn-primary">Ver
-                                            detalles</a>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        @endif
-    </div>
+
 @endsection
 
-@section('scripts')
-    <script>
-        // Puedes agregar scripts adicionales aquí si necesitas
-        // Por ejemplo, para un carrusel de imágenes o zoom en la imagen principal
-        document.addEventListener('DOMContentLoaded', function () {
-            // Ejemplo: Zoom en la imagen al hacer clic
-            const productImage = document.querySelector('.product-image');
-            if (productImage) {
-                productImage.addEventListener('click', function () {
-                    this.classList.toggle('zoomed');
-                });
-            }
-        });
-    </script>
-@endsection
+

@@ -28,6 +28,8 @@ class Usuario extends Authenticatable
     ];
 
 
+
+
     public function ciudad()
     {
         return $this->belongsTo(Ciudad::class, 'ciudad_id');

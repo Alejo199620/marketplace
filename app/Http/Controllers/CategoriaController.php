@@ -119,7 +119,7 @@ class CategoriaController extends Controller
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('img/categorias'), $filename);
             $categoria->imagen = $filename;
-        }   
+        }
 
         $categoria->save();
 
@@ -143,4 +143,16 @@ class CategoriaController extends Controller
         return redirect('categorias')->with('message', 'Categoria eliminada correctamente')
         ->with('type', 'danger');
     }
+
+    public function cambiarEstado(Request $request, $id)
+{
+    $categoria = Categoria::findOrFail($id);
+    $categoria->estado = $request->estado;
+    $categoria->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Estado actualizado correctamente'
+    ]);
+}
 }

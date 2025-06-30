@@ -38,6 +38,7 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|max:255',
             'valor' => 'required|numeric',
             'imagen' => 'nullable|image',
+
             'estado_producto' => 'required|in:nuevo,poco uso,usado',
             'categoria_id' => 'required|exists:categorias,id',
             'usuario_id' => 'required|exists:usuarios,id',
@@ -74,6 +75,24 @@ class ProductoController extends Controller
     /**
      * Display the specified resource.
      */
+public function info($id)
+{
+    // Obtener el producto actual
+    $producto = Producto::findOrFail($id);
+
+    // Obtener productos relacionados (ejemplo: misma categoría)
+    $productosRelacionados = Producto::where('categoria_id', $producto->categoria_id)
+                                    ->where('id', '!=', $producto->id) // Excluir el producto actual
+
+                                    ->get();
+
+    return view('market.info', [
+        'producto' => $producto,
+        'productosRelacionados' => $productosRelacionados,
+    ]);
+}
+
+
 public function show(Producto $producto)
 {
     $productosRelacionados = Producto::where('categoria_id', $producto->categoria_id)
@@ -81,9 +100,11 @@ public function show(Producto $producto)
                                     ->inRandomOrder()
                                     ->limit(3)
                                     ->get();
-    
+
     return view('productos.show', compact('producto', 'productosRelacionados'));
 }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -146,19 +167,22 @@ public function show(Producto $producto)
             ->with('type', 'danger');
     }
 
-    public function cambiarEstado(Producto $producto, Request $request)
+public function cambiarEstado(Request $request, $id)
 {
-    $request->validate([
-        'estado' => 'required|boolean'
-    ]);
+    try {
+        $producto = Producto::findOrFail($id);
+        $producto->estado = $request->estado;
+        $producto->save();
 
-    $producto->estado = $request->estado;
-    $producto->save();
-
-    return response()->json([
-        'success' => true,
-        'nuevoEstado' => $producto->estado,
-        'nuevoTexto' => $producto->estado ? 'Activo' : 'Inactivo'
-    ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Estado actualizado correctamente'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
 }
 }

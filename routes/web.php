@@ -7,21 +7,20 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CiudadController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\MarketController;
 use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('/home');
-    }
-    return view('login');
-});
+    return Auth::check() ? view('home') : view('login');
+})->name('home');
 
-Route::get('login', function () {
-    if (Auth::check()) {
-        return redirect('/home');
-    }
-    return view('login');
+
+
+
+
+Route::get('/login', function () {
+    return Auth::check() ? redirect('/home') : view('login');
 })->name('login');
 
 
@@ -34,15 +33,13 @@ Route::get('/terminos-condiciones', function () {
 
 });
 
-Route::get('/', function () {
-    return view('welcome'); // O la vista que uses para tu página de inicio
-})->name('home');
+
 
 Route::get('/productos/{producto}', [ProductoController::class, 'show'])->name('productos.show');
 Route::get('/usuarios/{usuario}', [UsuarioController::class, 'show'])->name('usuarios.show');
 
-Route::post('/productos/{producto}/cambiar-estado', [ProductoController::class, 'cambiarEstado'])->name('productos.cambiar-estado');
-Route::post('/usuarios/{usuario}/cambiar-estado', [UsuarioController::class, 'cambiarEstado'])->name('usuarios.cambiar-estado');
+
+
 
 Route::post('register', [LoginController::class, 'register']);
 Route::post('check', [LoginController::class, 'check']);
@@ -55,10 +52,25 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('logout', [LoginController::class, 'logout']);
 
+    Route::post('/comentarios/{comentario}/cambiar-estado', [ComentarioController::class, 'cambiarEstado']);
+    Route::post('/productos/{producto}/cambiar-estado', [ProductoController::class, 'cambiarEstado']);
+    Route::post('/usuarios/{usuario}/cambiar-estado', [UsuarioController::class, 'cambiarEstado']);
+    Route::post('/categorias/{categoria}/cambiar-estado', [CategoriaController::class, 'cambiarEstado']);
+    Route::post('/ciudades/{ciudad}/cambiar-estado', [CiudadController::class, 'cambiarEstado']);
 
-    Route::resource('categorias', CategoriaController::class);
-    Route::resource('ciudades', CiudadController::class);
-    Route::resource('usuarios', UsuarioController::class);
-    Route::resource('productos', ProductoController::class);
-    Route::resource('comentarios', ComentarioController::class);
+    Route::resources([
+        'categorias' => CategoriaController::class,
+        'ciudades' => CiudadController::class,
+        'usuarios' => UsuarioController::class,
+        'productos' => ProductoController::class,
+        'comentarios' => ComentarioController::class,
+    ]);
 });
+
+
+//-------------Rutas market----------------
+
+route::get('/market', [MarketController::class, 'index'])->name('market.index');
+
+Route::get('/producto/info/{id}', [ProductoController::class, 'info'])->name('producto.info');
+

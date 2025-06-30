@@ -209,14 +209,27 @@
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
-                            aria-label="Open user menu">
-                            <span class="avatar avatar-sm"
-                                style="background-image: url({{ url('static/avatars/000m.jpg')}}"></span>
-                            <div class="d-none d-xl-block ps-2">
-                                <div>Alejandro Cuellar </div>
-                                <div class="mt-1 small text-secondary">Administrador</div>
-                            </div>
-                        </a>
+    aria-label="Open user menu">
+    <div class="user-avatar">
+        @php
+            $userImage = Auth::user()->imagen;
+            $isDefault = Str::startsWith($userImage, 'static/avatars/');
+        @endphp
+
+        <img src="{{ asset($isDefault ? $userImage : 'img/usuarios/' . basename($userImage)) }}"
+            class="rounded-circle border border-white" width="40" height="40"
+            style="object-fit: cover;"
+            alt="{{ $isDefault ? 'Avatar predeterminado' : 'Foto de perfil' }} de {{ Auth::user()->nombre }}"
+            onerror="this.src='{{ asset('static/avatars/avatar.jpg') }}'">
+    </div>
+
+    <div class="user-info d-flex align-items-center ms-3">
+        <div class="text-end">
+            <div class="fw-semibold">{{ ucfirst(Auth::user()->nombre) }}</div>
+            <div class="small text-muted text-uppercase">{{ Auth::user()->rol }}</div>
+        </div>
+    </div>
+</a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" data-bs-theme="light">
                             <a href="#" class="dropdown-item">Status</a>
                             <a href="#" class="dropdown-item">Profile</a>
@@ -297,11 +310,11 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="{{ url ('categorias') }}">Categorías</a>
-                                            <a class="dropdown-item" href="{{ url ('ciudades') }}">Ciudades</a>
-                                            <a class="dropdown-item" href="{{ url ('productos') }}">Productos</a>
+                                            <a class="dropdown-item" href="{{ url('categorias') }}">Categorías</a>
+                                            <a class="dropdown-item" href="{{ url('ciudades') }}">Ciudades</a>
+                                            <a class="dropdown-item" href="{{ url('productos') }}">Productos</a>
 
-                                            <a class="dropdown-item" href="{{ url ('usuarios') }}">Usuarios</a>
+                                            <a class="dropdown-item" href="{{ url('usuarios') }}">Usuarios</a>
 
                                         </div>
                                     </div>
@@ -369,13 +382,13 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <!-- Libs JS -->
-    <script src="{{ url ('dist/libs/apexcharts/dist/apexcharts.min.js')}}" defer></script>
-    <script src="{{ url ('dist/libs/jsvectormap/dist/js/jsvectormap.min.js')}}" defer></script>
-    <script src="{{ url ('dist/libs/jsvectormap/dist/maps/world.js')}}" defer></script>
-    <script src="{{ url ('dist/libs/jsvectormap/dist/maps/world-merc.js')}}" defer></script>
+    <script src="{{ url('dist/libs/apexcharts/dist/apexcharts.min.js')}}" defer></script>
+    <script src="{{ url('dist/libs/jsvectormap/dist/js/jsvectormap.min.js')}}" defer></script>
+    <script src="{{ url('dist/libs/jsvectormap/dist/maps/world.js')}}" defer></script>
+    <script src="{{ url('dist/libs/jsvectormap/dist/maps/world-merc.js')}}" defer></script>
     <!-- Tabler Core -->
-    <script src="{{ url ('dist/js/tabler.min.js')}}" defer></script>
-    <script src="{{ url ('dist/js/demo.min.js')}}" defer></script>
+    <script src="{{ url('dist/js/tabler.min.js')}}" defer></script>
+    <script src="{{ url('dist/js/demo.min.js')}}" defer></script>
 
     @yield('scripts')
 
