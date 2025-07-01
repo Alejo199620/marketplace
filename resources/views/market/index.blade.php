@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Marketplace</title>
+    <title>Marketplace Catálogo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <link href="https://fonts.googleapis.com/css?family=Cairo:400,600,700&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400i,700i" rel="stylesheet">
@@ -20,6 +22,29 @@
     <link rel="stylesheet" type="text/css" href="assets/css/main-color.css">
 
 </head>
+<style>
+    #sugerencias a {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        gap: 10px;
+        border-bottom: 1px solid #eee;
+        text-decoration: none;
+        color: #333;
+        transition: background 0.2s ease-in-out;
+    }
+
+    #sugerencias a:hover {
+        background-color: #f5f5f5;
+    }
+
+    #sugerencias img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
 
 <body class="biolife-body">
 
@@ -72,18 +97,18 @@
                     <div class="col-lg-9 col-md-8 padding-top-2px">
                         <div class="header-search-bar layout-01">
                             <form action="#" class="form-search" name="desktop-seacrh" method="get">
-                                <input type="text" name="s" class="input-text" value=""
-                                    placeholder="Busca en marketplace..">
+                                <input type="text" name="s" class="input-text" id="buscador-productos"
+                                    placeholder="Busca en marketplace.." autocomplete="off" autofocus>
+
+                                <div id="sugerencias"
+                                    style="position: absolute; background: white; z-index: 999; width: 100%; display: none;">
+                                </div>
 
                                 <button type="submit" class="btn-submit"><i
                                         class="biolife-icon icon-search"></i></button>
                             </form>
                         </div>
-                        <div class="live-info">
-                            <p class="telephone"><i class="fa fa-phone" aria-hidden="true"></i><b
-                                    class="phone-number">(+57) 317 716 61 03</b></p>
-                            <p class="working-time">Lun-Vie: 8:30am-7:30pm; Sab-Dom: 9:30am-4:30pm</p>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -108,17 +133,37 @@
                     </div>
                     <div class="biolife-tab biolife-tab-contain sm-margin-top-34px">
                         <div class="tab-head tab-head__icon-top-layout icon-top-layout">
-                            <ul class="tabs md-margin-bottom-35-im xs-margin-bottom-40-im">
+                            @php
+                                $iconos = [
+                                    'tecnologia' => 'fas fa-laptop',
+                                    'electrodomesticos' => 'fas fa-plug',
+                                    'hogar y muebles' => 'fas fa-couch',
+                                    'ropa y accesorios' => 'fas fa-tshirt',
+                                    'vehiculos' => 'fas fa-car',
+                                    'deportes' => 'fas fa-football-ball',
+                                    'juguetes y niños' => 'fas fa-puzzle-piece',
+                                    'salud y belleza' => 'fas fa-spa',
+                                    'mascotas' => 'fas fa-paw',
+                                    'libros y papeleria' => 'fas fa-book',
+                                ];
+                            @endphp
 
+                            <ul class="tabs md-margin-bottom-35-im xs-margin-bottom-40-im">
                                 @foreach ($categorias as $key => $categoria)
+                                    @php
+                                        $nombre = strtolower(trim($categoria->nombre));
+                                        $icono = $iconos[$nombre] ?? 'fas fa-tags';
+                                    @endphp
                                     <li class="tab-element {{ $key == 0 ? 'active' : '' }}">
-                                        <a href="#tab{{ $categoria->slug }}" class="tab-link">
-                                            {{ $categoria->nombre }}
+                                        <a href="#tab{{ $categoria->slug }}"
+                                            class="tab-link flex flex-col items-center text-center">
+                                            <i class="{{ $icono }} text-xl mb-1"></i>
+                                            <span class="text-sm">{{ $categoria->nombre }}</span>
                                         </a>
                                     </li>
                                 @endforeach
-
                             </ul>
+
                         </div>
                         <div class="tab-content">
 
@@ -144,8 +189,7 @@
                                                                     class="product-thumnail">
                                                             @endif
                                                         </a>
-                                                        <a class="lookup btn_call_quickview" href="#"><i
-                                                                class="biolife-icon icon-search"></i></a>
+
                                                     </div>
                                                     <div class="info">
                                                         <b class="categories">{{ $categoria->nombre }}</b>
@@ -162,7 +206,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </li>
                                         @endforeach
 
 
@@ -183,147 +226,114 @@
 
     </div>
 
+
     <!-- FOOTER -->
-    <footer id="footer" class="footer layout-03">
-        <div class="footer-content background-footer-03">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-9">
-                        <section class="footer-item">
-                            <a href="{{ url('/market') }}" class="biolife-logo"><img src="/static/logoini.png" alt="logo"
-                                width="200" height="60"></a>
-                            <div class="footer-phone-info">
-                                <i class="biolife-icon icon-head-phone"></i>
-                                <p class="r-info">
-                                    <span>Got Questions ?</span>
-                                    <span>(700)  9001-1909 (900) 689 -66</span>
-                                </p>
-                            </div>
-                            <div class="newsletter-block layout-01">
-                                <h4 class="title">Newsletter Signup</h4>
-                                <div class="form-content">
-                                    <form action="#" name="new-letter-foter">
-                                        <input type="email" class="input-text email" value=""
-                                            placeholder="Your email here...">
-                                        <button type="submit" class="bnt-submit" name="ok">Sign up</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 md-margin-top-5px sm-margin-top-50px xs-margin-top-40px">
-                        <section class="footer-item">
-                            <h3 class="section-title">Useful Links</h3>
-                            <div class="row">
-                                <div class="col-lg-6 col-sm-6 col-xs-6">
-                                    <div class="wrap-custom-menu vertical-menu-2">
-                                        <ul class="menu">
-                                            <li><a href="#">About Us</a></li>
-                                            <li><a href="#">About Our Shop</a></li>
-                                            <li><a href="#">Secure Shopping</a></li>
-                                            <li><a href="#">Delivery infomation</a></li>
-                                            <li><a href="#">Privacy Policy</a></li>
-                                            <li><a href="#">Our Sitemap</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-sm-6 col-xs-6">
-                                    <div class="wrap-custom-menu vertical-menu-2">
-                                        <ul class="menu">
-                                            <li><a href="#">Who We Are</a></li>
-                                            <li><a href="#">Our Services</a></li>
-                                            <li><a href="#">Projects</a></li>
-                                            <li><a href="#">Contacts Us</a></li>
-                                            <li><a href="#">Innovation</a></li>
-                                            <li><a href="#">Testimonials</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 md-margin-top-5px sm-margin-top-50px xs-margin-top-40px">
-                        <section class="footer-item">
-                            <h3 class="section-title">Transport Offices</h3>
-                            <div class="contact-info-block footer-layout xs-padding-top-10px">
-                                <ul class="contact-lines">
-                                    <li>
-                                        <p class="info-item">
-                                            <i class="biolife-icon icon-location"></i>
-                                            <b class="desc">7563 St. Vicent Place, Glasgow, Greater Newyork NH7689,
-                                                UK </b>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <p class="info-item">
-                                            <i class="biolife-icon icon-phone"></i>
-                                            <b class="desc">Phone: (+067) 234 789 (+068) 222 888</b>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <p class="info-item">
-                                            <i class="biolife-icon icon-letter"></i>
-                                            <b class="desc">Email: contact@company.com</b>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <p class="info-item">
-                                            <i class="biolife-icon icon-clock"></i>
-                                            <b class="desc">Hours: 7 Days a week from 10:00 am</b>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="biolife-social inline">
-                                <ul class="socials">
-                                    <li><a href="#" title="twitter" class="socail-btn"><i
-                                                class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                    <li><a href="#" title="facebook" class="socail-btn"><i
-                                                class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                    <li><a href="#" title="pinterest" class="socail-btn"><i
-                                                class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-                                    <li><a href="#" title="youtube" class="socail-btn"><i
-                                                class="fa fa-youtube" aria-hidden="true"></i></a></li>
-                                    <li><a href="#" title="instagram" class="socail-btn"><i
-                                                class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                                </ul>
-                            </div>
-                        </section>
+<footer id="footer" class="footer layout-03">
+    <!-- Sección principal -->
+     <div class="footer-main" style="background-color: #182433; color: #ffffff;" class="py-5">
+        <div class="container">
+            <div class="row justify-content-center text-center text-lg-start">
+
+                <!-- Columna: Logo y contacto -->
+                <div class="col-lg-4 mb-4">
+                    <a href="{{ url('/market') }}" class="d-inline-block mb-3">
+                        <img src="/static/logo.png" alt="Marketplace Colombia" width="200" height="60">
+                    </a>
+                    <p class="small">Conectamos compradores y vendedores en toda Colombia. Plataforma segura y fácil para comerciar productos.</p>
+                    <ul class="list-unstyled small mt-3">
+                        <li class="mb-2"><i class="fas fa-phone-alt me-2"></i> (+57) 317 716 6103</li>
+                        <li><i class="fas fa-envelope me-2"></i> marketplace@gmail.com</li>
+                    </ul>
+                </div>
+
+                <!-- Columna: Enlaces Marketplace -->
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-3">Marketplace</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-light text-decoration-none">Explorar productos</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Cómo vender</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Cómo comprar</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Categorías</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Vendedores destacados</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna: Mi Cuenta -->
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-3">Mi cuenta</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-light text-decoration-none">Mis compras</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Mis ventas</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Favoritos</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Mensajes</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Configuración</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna: Legal y redes -->
+                <div class="col-lg-4 col-md-8 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-3">Legal</h6>
+                    <ul class="list-inline small">
+                        <li class="list-inline-item me-3">
+                            <a href="#" class="text-light text-decoration-none">
+                                <i class="fas fa-file-contract me-1"></i> Términos
+                            </a>
+                        </li>
+                        <li class="list-inline-item me-3">
+                            <a href="#" class="text-light text-decoration-none">
+                                <i class="fas fa-user-shield me-1"></i> Privacidad
+                            </a>
+                        </li>
+                        <li class="list-inline-item me-3">
+                            <a href="#" class="text-light text-decoration-none">
+                                <i class="fas fa-undo-alt me-1"></i> Devoluciones
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#" class="text-light text-decoration-none">
+                                <i class="fas fa-shield-alt me-1"></i> Protección
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h6 class="text-uppercase fw-bold mt-4 mb-2">Síguenos</h6>
+                    <div class="d-flex justify-content-center justify-content-lg-start gap-3 fs-5">
+                        <a href="#" class="text-light"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="separator sm-margin-top-70px xs-margin-top-40px"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección inferior -->
+    <div class="footer-bottom bg-light py-3 border-top text-center">
+            <div class="container">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                    <div class="mb-2 mb-md-0">
+                        <span>Métodos de pago:</span>
+                        <img src="/assets/images/card1.jpg" alt="Visa" width="40">
+                        <img src="/assets/images/card2.jpg" alt="Mastercard" width="40">
+                        <img src="/assets/images/card3.jpg" alt="PayPal" width="40">
+                        <img src="/assets/images/card4.jpg" alt="Nequi" width="40">
+                        <img src="/assets/images/card5.jpg" alt="Daviplata" width="40">
                     </div>
-                    <div class="col-lg-6 col-sm-6 col-xs-12">
-                        <div class="copy-right-text">
-                            <p><a href="templateshub.net">Templates Hub</a></p>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-sm-6 col-xs-12">
-                        <div class="payment-methods">
-                            <ul>
-                                <li><a href="#" class="payment-link"><img src="assets/images/card1.jpg"
-                                            width="51" height="36" alt=""></a></li>
-                                <li><a href="#" class="payment-link"><img src="assets/images/card2.jpg"
-                                            width="51" height="36" alt=""></a></li>
-                                <li><a href="#" class="payment-link"><img src="assets/images/card3.jpg"
-                                            width="51" height="36" alt=""></a></li>
-                                <li><a href="#" class="payment-link"><img src="assets/images/card4.jpg"
-                                            width="51" height="36" alt=""></a></li>
-                                <li><a href="#" class="payment-link"><img src="assets/images/card5.jpg"
-                                            width="51" height="36" alt=""></a></li>
-                            </ul>
-                        </div>
+                    <div>
+                        <p class="mb-0">&copy; 2025 Marketplace Colombia. Todos los derechos reservados.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
+</footer>
 
 
 
-    <!--Quickview Popup-->
+
+
+    {{-- <!--Quickview Popup-->
     <div id="biolife-quickview-block" class="biolife-quickview-block">
         <div class="quickview-container">
             <a href="#" class="btn-close-quickview" data-object="open-quickview-block"><span
@@ -436,7 +446,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Scroll Top Button -->
     <a class="btn-scroll-top"><i class="biolife-icon icon-left-arrow"></i></a>
@@ -449,6 +459,57 @@
     <script src="assets/js/slick.min.js"></script>
     <script src="assets/js/biolife.framework.js"></script>
     <script src="assets/js/functions.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#buscador-productos').on('input', function() {
+                let query = $(this).val();
+
+                if (query.length >= 2) {
+                    $.ajax({
+                        url: '{{ route('buscar.productos') }}',
+                        type: 'GET',
+                        data: {
+                            query: query
+                        },
+                        success: function(data) {
+                            let sugerencias = $('#sugerencias');
+                            sugerencias.empty().show();
+
+                            if (data.length === 0) {
+                                sugerencias.append('<div class="p-2">Sin resultados</div>');
+                            }
+
+                            data.forEach(function(producto) {
+                                let imagen = producto.imagen ? '/img/productos/' +
+                                    producto.imagen : '/img/productos/sin_foto.avif';
+                                let item = `
+                            <a href="/producto/info/${producto.id}" class="d-flex align-items-center p-2 border-bottom text-decoration-none text-dark">
+                                <img src="${imagen}" alt="${producto.titulo}" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                                <div>
+                                    <div class="fw-bold">${producto.titulo}</div>
+                                    <div class="text-muted">$${parseFloat(producto.valor).toLocaleString()}</div>
+                                </div>
+                            </a>
+                        `;
+                                sugerencias.append(item);
+                            });
+                        }
+                    });
+                } else {
+                    $('#sugerencias').hide();
+                }
+            });
+
+            // Ocultar sugerencias al hacer clic fuera
+            $(document).click(function(e) {
+                if (!$(e.target).closest('#buscador-productos, #sugerencias').length) {
+                    $('#sugerencias').hide();
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

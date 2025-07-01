@@ -437,6 +437,17 @@
     });
 </script>
 
+@if (session('message') && in_array(session('type'), ['success', 'warning', 'error']))
+    <script>
+        Swal.fire({
+            title: '{{ session("type") == "success" ? "Éxito" : (session("type") == "warning" ? "Advertencia" : "Error") }}',
+            text: '{{ session("message") }}',
+            icon: '{{ session("type") }}',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
+
 
 
 

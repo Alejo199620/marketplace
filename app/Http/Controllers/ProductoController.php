@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use Illuminate\Support\Facades\Validator;
+ use Illuminate\Database\QueryException;
+ use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
@@ -78,18 +80,20 @@ class ProductoController extends Controller
 public function info($id)
 {
     // Obtener el producto actual
-    $producto = Producto::findOrFail($id);
+    $producto = Producto::with(['usuario', 'ciudad', 'categoria'])->findOrFail($id);
 
-    // Obtener productos relacionados (ejemplo: misma categoría)
+    // Obtener productos relacionados (misma categoría)
     $productosRelacionados = Producto::where('categoria_id', $producto->categoria_id)
-                                    ->where('id', '!=', $producto->id) // Excluir el producto actual
+        ->where('id', '!=', $producto->id)
+        ->get();
 
-                                    ->get();
+    // Obtener el promedio de valoraciones desde la tabla comentarios
+    $promedioValoracion = DB::table('comentarios')
+        ->where('producto_id', $producto->id)
+        ->where('estado', 1)
+        ->avg('valoracion') ?? 0;
 
-    return view('market.info', [
-        'producto' => $producto,
-        'productosRelacionados' => $productosRelacionados,
-    ]);
+    return view('market.info', compact('producto', 'productosRelacionados', 'promedioValoracion'));
 }
 
 
@@ -98,7 +102,7 @@ public function show(Producto $producto)
     $productosRelacionados = Producto::where('categoria_id', $producto->categoria_id)
                                     ->where('id', '!=', $producto->id)
                                     ->inRandomOrder()
-                                    ->limit(3)
+
                                     ->get();
 
     return view('productos.show', compact('producto', 'productosRelacionados'));
@@ -158,14 +162,28 @@ public function show(Producto $producto)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+
+
+public function destroy(string $id)
+{
+    try {
         $producto = Producto::findOrFail($id);
         $producto->delete();
 
-        return redirect('productos')->with('message', 'Producto eliminado correctamente')
-            ->with('type', 'danger');
+        return redirect('productos')->with('message', 'Producto eliminado correctamente.')
+                                     ->with('type', 'success');
+
+    } catch (QueryException $e) {
+        if ($e->getCode() == 23000) {
+            return redirect('productos')->with('message', 'No se puede eliminar el producto porque está relacionado con otros registros.')
+                                         ->with('type', 'warning');
+        }
+
+        return redirect('productos')->with('message', 'Ocurrió un error al intentar eliminar el producto.')
+                                     ->with('type', 'error');
     }
+}
+
 
 public function cambiarEstado(Request $request, $id)
 {
@@ -185,4 +203,21 @@ public function cambiarEstado(Request $request, $id)
         ], 500);
     }
 }
+
+public function buscar(Request $request)
+{
+    $query = $request->input('query');
+
+    $productos = Producto::where('titulo', 'like', '%' . $query . '%')
+        ->limit(5)
+        ->get(['id', 'titulo', 'valor', 'imagen']);
+
+    return response()->json($productos);
+}
+
+
+
+
+
+
 }

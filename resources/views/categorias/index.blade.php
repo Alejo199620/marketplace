@@ -63,11 +63,7 @@
 @stop
 
 @section('content')
-@if(session('message'))
-    <div class="alert alert-{{ session('type') }}">
-        {{ session('message') }}
-    </div>
-@endif
+
 
 <table class="ui celled table">
     <thead>
@@ -369,5 +365,17 @@
         });
     });
 </script>
+
+
+@if (session('message') && in_array(session('type'), ['success', 'warning', 'error', 'danger', 'info']))
+    <script>
+        Swal.fire({
+            icon: '{{ session("type") == "danger" ? "success" : session("type") }}',
+            title: '{{ session("type") == "success" ? "Éxito" : (session("type") == "warning" ? "Advertencia" : (session("type") == "danger" ? "Eliminado" : "Mensaje")) }}',
+            text: '{{ session("message") }}',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
 
 @stop

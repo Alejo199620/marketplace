@@ -70,7 +70,12 @@ Route::middleware(['auth'])->group(function () {
 
 //-------------Rutas market----------------
 
-route::get('/market', [MarketController::class, 'index'])->name('market.index');
+Route::get('/market', [MarketController::class, 'index'])->name('market.index');
+
 
 Route::get('/producto/info/{id}', [ProductoController::class, 'info'])->name('producto.info');
+
+Route::post('/guardar-comentario', [ComentarioController::class, 'storeFromFront'])->name('guardar.comentario');
+
+Route::get('/buscar-productos', [ProductoController::class, 'buscar'])->name('buscar.productos');
 

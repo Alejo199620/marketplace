@@ -131,4 +131,25 @@ class ComentarioController extends Controller
         ], 500);
     }
 }
+
+public function storeFromFront(Request $request)
+{
+    $request->validate([
+        'nombre' => 'required|string|max:100',
+        'email' => 'required|email|max:100',
+        'comentario' => 'required|string|max:500',
+        'valoracion' => 'sometimes|integer|between:1,5',
+        'producto_id' => 'required|exists:productos,id'
+    ]);
+
+    Comentario::create([
+        'descripcion' => "Nombre: {$request->nombre}\nEmail: {$request->email}\nComentario: {$request->comentario}",
+        'valoracion' => $request->valoracion ?? 4,
+        'producto_id' => $request->producto_id,
+        'estado' => 1, // 1 para aprobado, 0 para pendiente
+        'usuario_id' => null
+    ]);
+
+    return back()->with('success', '¡Gracias por tu comentario!');
+}
 }

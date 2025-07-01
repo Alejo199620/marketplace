@@ -65,7 +65,7 @@
 body{
     font-family: 'Cairo', sans-serif;
     font-size: 20px;
-    line-height: 38px;
+    line-height: 32x;
     font-weight: 400;
     color: #000000;
     overflow-x: hidden;
@@ -528,7 +528,7 @@ body{
 }
 /*********************/
 .btn-scroll-top{
-    color: #333333;
+    color: #ffffff;
     border-radius: 50%;
     cursor: pointer;
     font-size: 50px;
@@ -813,7 +813,7 @@ body{
 }
 .biolife-nav ul li span,
 .biolife-nav ul li a{
-    color: #666666;
+    color: #182433;
     font-size: 15px;
     line-height: 1;
     display: inline-block;
@@ -4150,13 +4150,13 @@ body.open-overlay #overlay{
 .sumary-product .product-attribute{
     display: inline-block;
     float: left;
-    width: calc( 100% - 38.462% - 270px );
+    width: calc( 100% - 38.462% - 307px );
     padding-left: 20px;
     padding-top: 13px;
 }
 .sumary-product .product-attribute .title{
-    font-size: 20px;
-    line-height: 24px;
+ font-size: 32px;
+    line-height: 33px;
     color: #222222;
     font-weight: 600;
     display: block;
@@ -4283,7 +4283,8 @@ body.open-overlay #overlay{
 }
 .sumary-product .action-form{
     display: inline-block;
-    width: 270px;
+        border-radius: 43px;
+    width: 300px;
     background-color: #f3f3f3;
     padding: 11px 20px 34px;
 }
@@ -14093,7 +14094,7 @@ body.open-quickview-block .biolife-quickview-block{
         margin: -5px -15px;
     }
     .biolife-carousel.products-list:not(.default-product-style) .slick-list{
-        padding: 5px;
+        padding: 43px;
     }
     .biolife-carousel.products-list.vertical-layout-02{
         margin: -15px;
@@ -14105,7 +14106,7 @@ body.open-quickview-block .biolife-quickview-block{
         margin-bottom: -150px;
     }
     .biolife-carousel.products-list:not(.default-product-style):hover .slick-list{
-        padding-bottom: 150px;
+        padding-bottom: 215px;
     }
     .contain-product.layout-02:hover,
     .contain-product.layout-default:hover{

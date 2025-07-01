@@ -20,6 +20,7 @@
     <link href="{{ url('dist/css/tabler-payments.min.css') }}" rel="stylesheet" />
     <link href="{{ url('dist/css/tabler-vendors.min.css') }}" rel="stylesheet" />
     <link href="{{ url('dist/css/demo.min.css') }}" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
     <style>
         @import url('https://rsms.me/inter/inter.css');
 

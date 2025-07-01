@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Ciudad;
-
+  use Illuminate\Database\QueryException;
 class UsuarioController extends Controller
 {
     /**
@@ -146,14 +146,31 @@ class UsuarioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+
+
+public function destroy(string $id)
+{
+    try {
         $usuario = Usuario::findOrFail($id);
         $usuario->delete();
 
-        return redirect('usuarios')->with('message', 'Usuario eliminado correctamente')
-            ->with('type', 'danger');
+        // Éxito
+        return redirect('usuarios')->with('message', 'Usuario eliminado correctamente.')
+                                   ->with('type', 'success');
+
+    } catch (QueryException $e) {
+        // Error por clave foránea (registros relacionados)
+        if ($e->getCode() == 23000) {
+            return redirect('usuarios')->with('message', 'No se puede eliminar el usuario porque tiene registros asociados.')
+                                       ->with('type', 'warning');
+        }
+
+        // Otro error inesperado
+        return redirect('usuarios')->with('message', 'Ocurrió un error al intentar eliminar el usuario.')
+                                   ->with('type', 'error');
     }
+}
+
 
        public function cambiarEstado(Usuario $usuario, Request $request)
 {

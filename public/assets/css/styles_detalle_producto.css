@@ -1,0 +1,214 @@
+<style>
+    #sugerencias a {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        gap: 10px;
+        border-bottom: 1px solid #eee;
+        text-decoration: none;
+        color: #333;
+        transition: background 0.2s ease-in-out;
+    }
+
+    #sugerencias a:hover {
+        background-color: #f5f5f5;
+    }
+
+    #sugerencias img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    /* Estilos para el contenedor de imágenes */
+    .media .biolife-carousel {
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+    }
+
+    .media .item {
+        width: 100%;
+        height: 100%;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        background: #f8f9fa;
+        /* Fondo neutral para imágenes con transparencia */
+    }
+
+    .media .item img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+
+    .rating-stars .fa-star {
+        transition: color 0.2s;
+    }
+
+    .rating-stars .checked {
+        color: #f39c12;
+        /* amarillo */
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .btn-submit,
+    .btn-primary {
+        background-color: #28a745;
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .btn-submit:hover,
+    .btn-primary:hover {
+        background-color: #218838;
+    }
+
+    .seller-details.compact {
+        margin-bottom: -21px;
+        padding: 33px;
+        background-color: #f8f9fa;
+        border-radius: 37px;
+        border: 1px solid #eaeaea;
+        max-width: 300px;
+    }
+
+    .seller-title {
+        margin: 0px 0px 13px 25px;
+        font-size: 25px;
+        color: #000000;
+        font-weight: 600;
+        padding-bottom: 6px;
+        border-bottom: 4px solid #eee;
+    }
+
+    .seller-info.list-view {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: #555;
+        line-height: 1.4;
+    }
+
+    .seller-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+        border: 2px solid #eaeaea;
+    }
+
+    .seller-name {
+        font-weight: 600;
+        font-size: 1.1em;
+    }
+
+    .seller-profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .info-item i {
+        margin-right: 10px;
+        color: #6c757d;
+        width: 16px;
+        text-align: center;
+    }
+
+    /* comentarios_ */
+    .comentarios-scrollbox {
+        max-height: 500px;
+        /* Altura fija */
+        overflow-y: auto;
+        /* Scroll vertical */
+        background: #fefefe;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
+        scroll-behavior: smooth;
+    }
+
+    .comentario-item {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        transition: transform 0.2s ease;
+    }
+
+    .comentario-item:hover {
+        transform: scale(1.01);
+    }
+
+    .comentario-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .comentario-text {
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .comentario-fecha {
+        font-size: 12px;
+        color: #aaa;
+    }
+
+    .comentarios-scrollbox::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .comentarios-scrollbox::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 10px;
+    }
+
+    .comentarios-scrollbox::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .biolife-nav .permal-link {
+        font-size: 3rem;
+        /* Tamaño del texto */
+    }
+
+    .biolife-nav .permal-link i {
+        font-size: 4rem;
+        /* Tamaño del ícono */
+        margin-right: 8px;
+        /* Espaciado entre ícono y texto */
+    }
+</style>

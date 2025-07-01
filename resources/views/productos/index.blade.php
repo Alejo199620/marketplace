@@ -45,13 +45,18 @@
         border-collapse: collapse !important;
     }
 
-    <style>.cursor-pointer {
+    .cursor-pointer {
         cursor: pointer;
     }
 
     .estado-badge:hover {
         opacity: 0.8;
     }
+
+    .swal2-container select {
+    display: none !important;
+}
+
 </style>
 @stop
 
@@ -115,7 +120,7 @@
                 <td class="col-descripcion" title="{{ $producto->descripcion }}">
                     {{ $producto->descripcion }}
                 </td>
-                <td>{{ $producto->valor }}</td>
+                <td>{{ number_format($producto->valor, 2) }}</td>
                 <td>{{ $producto->estado_producto }}</td>
 
                 <td>
@@ -343,9 +348,8 @@
 @section('scripts')
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
 <script src="//cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
         $('.table').DataTable({
@@ -356,9 +360,14 @@
         });
     });
 </script>
+
 <script>
     $(document).ready(function () {
-        $('select').select2({
+        // Asignar clase select2 a los selects del formulario
+        $('select.form-control').addClass('select2');
+
+        // Inicializar select2 solo a los que tengan esa clase
+        $('.select2').select2({
             dropdownParent: $('#modal-report'),
             width: '100%'
         });
@@ -385,13 +394,9 @@
                 .replace(/^-+/, '')
                 .replace(/-+$/, '');
         }
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const estadoBadges = document.querySelectorAll('.estado-badge');
 
+        // Manejador de estados con fetch y badge
+        const estadoBadges = document.querySelectorAll('.estado-badge');
         estadoBadges.forEach(badge => {
             badge.addEventListener('click', function () {
                 const productoId = this.getAttribute('data-id');
@@ -399,10 +404,8 @@
                 const nuevoEstado = estadoActual === 1 ? 0 : 1;
                 const badge = this;
 
-                // Mostrar loader
                 badge.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-                // Enviar petición AJAX
                 fetch(`/productos/${productoId}/cambiar-estado`, {
                     method: 'POST',
                     headers: {
@@ -411,43 +414,56 @@
                     },
                     body: JSON.stringify({ estado: nuevoEstado })
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Actualizar el badge visualmente
-                            badge.setAttribute('data-estado', nuevoEstado);
-                            badge.classList.toggle('bg-green');
-                            badge.classList.toggle('bg-red');
-                            badge.textContent = nuevoEstado === 1 ? 'Activo' : 'Inactivo';
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        badge.setAttribute('data-estado', nuevoEstado);
+                        badge.classList.toggle('bg-green');
+                        badge.classList.toggle('bg-red');
+                        badge.textContent = nuevoEstado === 1 ? 'Activo' : 'Inactivo';
 
-                            // Mostrar notificación de éxito
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Estado actualizado',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        } else {
-                            badge.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: data.message || 'No se pudo cambiar el estado'
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Estado actualizado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else {
                         badge.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: 'Ocurrió un error al cambiar el estado'
+                            text: data.message || 'No se pudo cambiar el estado'
                         });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    badge.textContent = estadoActual === 1 ? 'Activo' : 'Inactivo';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al cambiar el estado'
                     });
+                });
             });
         });
     });
 </script>
 
+@if (session('message') && in_array(session('type'), ['success', 'warning', 'error']))
+    <script>
+        // Cerrar cualquier select2 antes de abrir sweetalert
+        $('.select2').select2('close');
+
+        Swal.fire({
+            title: '{{ session("type") == "success" ? "Éxito" : (session("type") == "warning" ? "Advertencia" : "Error") }}',
+            text: '{{ session("message") }}',
+            icon: '{{ session("type") }}',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
+
 @stop
+
