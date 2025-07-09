@@ -21,6 +21,7 @@
     <link href="./dist/css/tabler-payments.min.css?1692870487" rel="stylesheet" />
     <link href="./dist/css/tabler-vendors.min.css?1692870487" rel="stylesheet" />
     <link href="./dist/css/demo.min.css?1692870487" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
@@ -71,6 +72,8 @@
                         <label class="form-label">
                             Password
                             <span class="form-label-description">
+
+
                                 <a href="./forgot-password.html">Olvide mi contraseña</a>
                             </span>
                         </label>
@@ -105,7 +108,7 @@
                     </div>
                 </form>
                 <div class="text-center text-secondary mt-3">
-                    No tienes cuenta? <a href="register" tabindex="-1">Registrarse</a>
+                    No tienes cuenta? <a href="register" target="_blank" tabindex="-1">Registrarse</a>
                 </div>
             </div>
         </div>

@@ -7,35 +7,51 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str; // Asegúrate de importar esta clase
+
 
 class LoginController extends Controller
 {
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:100',
-            'email' => 'required|email|unique:usuarios,email',
-            'password' => 'required|min:8',
-        ]);
 
-        if ($validator->fails()) {
-            return redirect('/register')
-                ->withErrors($validator)
-                ->withInput();
-        }
 
-        $usuario = new Usuario();
+public function register(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'nombre' => 'required|string|max:100',
+        'email' => 'required|email|unique:usuarios,email',
+        'password' => 'required|min:8',
+    ]);
 
-        $usuario->nombre = $request->nombre;
-        $usuario->email = $request->email;
-        $usuario->password = Hash::make($request->password);
-        $usuario->imagen = 'static/avatars/avatar.jpg';
-        $usuario->save();
-
-        return redirect('login')
-            ->with('type', 'success')
-            ->with('message', 'Usuario registrado exitosamente. Por favor, inicia sesión.');
+    if ($validator->fails()) {
+        return redirect('/register')
+            ->withErrors($validator)
+            ->withInput();
     }
+
+    // Formatear nombre
+    $nombreFormateado = collect(explode(' ', $request->nombre))
+        ->filter()
+        ->map(fn($word) => Str::ucfirst(Str::lower($word)))
+        ->implode(' ');
+
+    // Email en minúscula
+    $emailFormateado = Str::lower($request->email);
+
+    // Contraseña en minúscula antes de hashear
+    $passwordEnMinuscula = Str::lower($request->password);
+
+    $usuario = new Usuario();
+    $usuario->nombre = $nombreFormateado;
+    $usuario->email = $emailFormateado;
+    $usuario->password = Hash::make($passwordEnMinuscula);
+    $usuario->imagen = 'static/avatars/avatar.jpg';
+    $usuario->save();
+
+    return redirect('login')
+        ->with('type', 'success')
+        ->with('message', 'Usuario registrado exitosamente. Por favor, inicia sesión.');
+}
+
 
     public function check(Request $request)
     {

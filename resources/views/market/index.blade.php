@@ -66,6 +66,7 @@
                 <div class="top-bar left">
                     <ul class="horizontal-menu">
                         <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>Marketplace@gmail.com</a>
+
                         </li>
 
                     </ul>
@@ -95,7 +96,8 @@
 
 
                     <div class="col-lg-9 col-md-8 padding-top-2px">
-                        <div class="header-search-bar layout-01">
+                        <div class="header-search-bar layout-01" style="margin-left:40px;">
+
                             <form action="#" class="form-search" name="desktop-seacrh" method="get">
                                 <input type="text" name="s" class="input-text" id="buscador-productos"
                                     placeholder="Busca en marketplace.." autocomplete="off" autofocus>
@@ -108,8 +110,17 @@
                                         class="biolife-icon icon-search"></i></button>
                             </form>
                         </div>
+                        {{-- @guest
+                            <div class="text-end mt-2">
+                                <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-sign-in-alt me-1"></i> Inicia sesión para ofrecer tus productos
+                                </a>
+                            </div>
+                        @endguest --}}
+
 
                     </div>
+
                 </div>
             </div>
         </div>
@@ -228,89 +239,91 @@
 
 
     <!-- FOOTER -->
-<footer id="footer" class="footer layout-03">
-    <!-- Sección principal -->
-     <div class="footer-main" style="background-color: #182433; color: #ffffff;" class="py-5">
-        <div class="container">
-            <div class="row justify-content-center text-center text-lg-start">
+    <footer id="footer" class="footer layout-03">
+        <!-- Sección principal -->
+        <div class="footer-main" style="background-color: #182433; color: #ffffff;" class="py-5">
+            <div class="container">
+                <div class="row justify-content-center text-center text-lg-start">
 
-                <!-- Columna: Logo y contacto -->
-                <div class="col-lg-4 mb-4">
-                    <a href="{{ url('/market') }}" class="d-inline-block mb-3">
-                        <img src="/static/logo.png" alt="Marketplace Colombia" width="200" height="60">
-                    </a>
-                    <p class="small">Conectamos compradores y vendedores en toda Colombia. Plataforma segura y fácil para comerciar productos.</p>
-                    <ul class="list-unstyled small mt-3">
-                        <li class="mb-2"><i class="fas fa-phone-alt me-2"></i> (+57) 317 716 6103</li>
-                        <li><i class="fas fa-envelope me-2"></i> marketplace@gmail.com</li>
-                    </ul>
-                </div>
-
-                <!-- Columna: Enlaces Marketplace -->
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-3">Marketplace</h6>
-                    <ul class="list-unstyled small">
-                        <li><a href="#" class="text-light text-decoration-none">Explorar productos</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Cómo vender</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Cómo comprar</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Categorías</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Vendedores destacados</a></li>
-                    </ul>
-                </div>
-
-                <!-- Columna: Mi Cuenta -->
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-3">Mi cuenta</h6>
-                    <ul class="list-unstyled small">
-                        <li><a href="#" class="text-light text-decoration-none">Mis compras</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Mis ventas</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Favoritos</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Mensajes</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Configuración</a></li>
-                    </ul>
-                </div>
-
-                <!-- Columna: Legal y redes -->
-                <div class="col-lg-4 col-md-8 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-3">Legal</h6>
-                    <ul class="list-inline small">
-                        <li class="list-inline-item me-3">
-                            <a href="#" class="text-light text-decoration-none">
-                                <i class="fas fa-file-contract me-1"></i> Términos
-                            </a>
-                        </li>
-                        <li class="list-inline-item me-3">
-                            <a href="#" class="text-light text-decoration-none">
-                                <i class="fas fa-user-shield me-1"></i> Privacidad
-                            </a>
-                        </li>
-                        <li class="list-inline-item me-3">
-                            <a href="#" class="text-light text-decoration-none">
-                                <i class="fas fa-undo-alt me-1"></i> Devoluciones
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#" class="text-light text-decoration-none">
-                                <i class="fas fa-shield-alt me-1"></i> Protección
-                            </a>
-                        </li>
-                    </ul>
-
-                    <h6 class="text-uppercase fw-bold mt-4 mb-2">Síguenos</h6>
-                    <div class="d-flex justify-content-center justify-content-lg-start gap-3 fs-5">
-                        <a href="#" class="text-light"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-light"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-light"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-light"><i class="fab fa-youtube"></i></a>
+                    <!-- Columna: Logo y contacto -->
+                    <div class="col-lg-4 mb-4">
+                        <a href="{{ url('/market') }}" class="d-inline-block mb-3">
+                            <img src="/static/logo.png" alt="Marketplace Colombia" width="200" height="60">
+                        </a>
+                        <p class="small">Conectamos compradores y vendedores en toda Colombia. Plataforma segura y
+                            fácil para comerciar productos.</p>
+                        <ul class="list-unstyled small mt-3">
+                            <li class="mb-2"><i class="fas fa-phone-alt me-2"></i> (+57) 317 716 6103</li>
+                            <li><i class="fas fa-envelope me-2"></i> marketplace@gmail.com</li>
+                        </ul>
                     </div>
-                </div>
 
+                    <!-- Columna: Enlaces Marketplace -->
+                    <div class="col-lg-2 col-md-4 mb-4">
+                        <h6 class="text-uppercase fw-bold mb-3">Marketplace</h6>
+                        <ul class="list-unstyled small">
+                            <li><a href="#" class="text-light text-decoration-none">Explorar productos</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Cómo vender</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Cómo comprar</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Categorías</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Vendedores destacados</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna: Mi Cuenta -->
+                    <div class="col-lg-2 col-md-4 mb-4">
+                        <h6 class="text-uppercase fw-bold mb-3">Mi cuenta</h6>
+                        <ul class="list-unstyled small">
+                            <li><a href="#" class="text-light text-decoration-none">Mis compras</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Mis ventas</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Favoritos</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Mensajes</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Configuración</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna: Legal y redes -->
+                    <div class="col-lg-4 col-md-8 mb-4">
+                        <h6 class="text-uppercase fw-bold mb-3">Legal</h6>
+                        <ul class="list-inline small">
+                            <li class="list-inline-item me-3">
+                                <a href="#" class="text-light text-decoration-none">
+                                    <i class="fas fa-file-contract me-1"></i> Términos
+                                </a>
+                            </li>
+                            <li class="list-inline-item me-3">
+                                <a href="#" class="text-light text-decoration-none">
+                                    <i class="fas fa-user-shield me-1"></i> Privacidad
+                                </a>
+                            </li>
+                            <li class="list-inline-item me-3">
+                                <a href="#" class="text-light text-decoration-none">
+                                    <i class="fas fa-undo-alt me-1"></i> Devoluciones
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#" class="text-light text-decoration-none">
+                                    <i class="fas fa-shield-alt me-1"></i> Protección
+                                </a>
+                            </li>
+                        </ul>
+
+                        <h6 class="text-uppercase fw-bold mt-4 mb-2">Síguenos</h6>
+                        <div class="d-flex justify-content-center justify-content-lg-start gap-3 fs-5">
+                            <a href="#" class="text-light"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-light"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-light"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-light"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Sección inferior -->
-    <div class="footer-bottom bg-light py-3 border-top text-center">
+        <!-- Sección inferior -->
+        <div class="footer-bottom bg-light py-3 border-top text-center">
             <div class="container">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
                     <div class="mb-2 mb-md-0">
@@ -327,7 +340,7 @@
                 </div>
             </div>
         </div>
-</footer>
+    </footer>
 
 
 
