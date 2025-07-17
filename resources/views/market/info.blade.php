@@ -47,7 +47,6 @@
                     <ul class="horizontal-menu">
                         <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>Marketplace@gmail.com</a>
                         </li>
-
                     </ul>
                 </div>
                 <div class="top-bar right">
@@ -55,13 +54,7 @@
                         <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-
-
-
                     </ul>
-
-
-
                 </div>
             </div>
         </div>
@@ -72,9 +65,6 @@
                         <a href="{{ url('market') }}" class="biolife-logo"><img src="/static/logoini.png" alt="logo"
                                 width="200" height="60"></a>
                     </div>
-
-
-
                     <div class="col-lg-9 col-md-8 padding-top-2px">
                         <div class="header-search-bar layout-01">
                             <form action="#" class="form-search" name="desktop-seacrh" method="get">
@@ -84,12 +74,10 @@
                                 <div id="sugerencias"
                                     style="position: absolute; background: white; z-index: 999; width: 100%; display: none;">
                                 </div>
-
                                 <button type="submit" class="btn-submit"><i
                                         class="biolife-icon icon-search"></i></button>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -117,6 +105,18 @@
 
             <!-- Main content -->
             <div id="main-content" class="main-content">
+
+                @if (isset($producto) && $producto->categoria)
+                    <div class="detail-item">
+                        <span class="detail-label">Categoría:</span>
+                        <span class="category-name">{{ $producto->categoria->nombre }}</span>
+                    </div>
+                @else
+                    <div class="detail-item">
+                        <span class="detail-label">Categoría:</span>
+                        <span class="category-name">Sin categoría asignada</span>
+                    </div>
+                @endif
 
                 <!-- summary info -->
                 <div class="sumary-product single-layout">
@@ -161,14 +161,11 @@
                             <small
                                 style="font-size: 0.9rem; color: #555;">({{ number_format($promedioValoracion, 1) }})</small>
                         </div>
-
-
                         <div class="detail-item">
                             <span class="detail-label">Descripción:</span>
 
                             <p class="excerpt">{{ $producto->descripcion }}</p>
                         </div>
-
                         <div class="detail-item">
                             <span class="detail-label">Valor:</span>
                             <div class="price">
@@ -179,8 +176,6 @@
                                 </ins>
                             </div>
                         </div>
-
-
                     </div>
 
 
@@ -338,11 +333,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
     </div>
 

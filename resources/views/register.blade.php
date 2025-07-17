@@ -20,6 +20,7 @@
     <link href="./dist/css/tabler-payments.min.css?1692870487" rel="stylesheet" />
     <link href="./dist/css/tabler-vendors.min.css?1692870487" rel="stylesheet" />
     <link href="./dist/css/demo.min.css?1692870487" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
@@ -39,7 +40,7 @@
         <div class="container container-tight py-4">
             <div class="text-center mb-4">
                 <a href=".">
-                    <img src="{{ url('static/logoini.png')}}">
+                    <img src="{{ url('static/logoini.png') }}">
                 </a>
             </div>
             <form class="card card-md" action="register" method="post" autocomplete="off">
@@ -47,6 +48,17 @@
                 @csrf
 
                 <div class="card-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <strong>Ups! Ocurrieron algunos errores:</strong>
+                            <ul class="mb-0 mt-2">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <h2 class="card-title text-center mb-4">Crear nueva cuenta</h2>
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
@@ -96,6 +108,7 @@
             </div>
         </div>
     </div>
+
     <!-- Libs JS -->
     <!-- Tabler Core -->
     <script src="./dist/js/tabler.min.js?1692870487" defer></script>

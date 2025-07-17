@@ -9,12 +9,14 @@ use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\MarketController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
+
+
 
 
 Route::get('/', function () {
-    return Auth::check() ? view('home') : view('login');
+    return Auth::check() ? redirect('/home') : view('login');
 })->name('home');
-
 
 
 
@@ -46,9 +48,13 @@ Route::post('check', [LoginController::class, 'check']);
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/home', function () {
-        return view('home');
-    });
+    // Route::get('/home', function () {
+    //     return view('home');
+    // });
+
+
+Route::get('/home', [DashboardController::class, 'index'])->middleware('auth');
+
 
     Route::get('logout', [LoginController::class, 'logout']);
 

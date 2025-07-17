@@ -1,0 +1,32 @@
+Marketplace prueba con laravel
+
+Instrucciones de uso en xampp:
+
+clonar reposirotio o desacrgar archivo zip
+
+descomprimir carpeta en htdocs de tu xampp 
+
+en terminal  composer install para que se cree la carpeta vendor
+
+en terminal cmd crear el archivo env
+copy .env.example .env
+
+en archivo .env configurar nombre de base de datos marketplace_db esta adjunta en repositorio la base de datos 
+importar base de datos en phpmyadmin
+
+
+php artisan key:generate  esto agrega configuracion al .env
+
+listo ejecutar php artisan serve 
+
+
+tiene una pagina de login pensado en administradores crear cuenta , 
+
+y http://127.0.0.1:8000/ login
+
+http://127.0.0.1:8000/market te lleva a la vista de catalogo 
+
+
+claramente tiene cosas por mejorar pero es un proyecto de aprendizaje continuo gracias .
+
+
